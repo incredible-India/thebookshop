@@ -6,9 +6,14 @@ const express =require('express'); //express template engine
 const cors = require('cors');//for cors error
 const morgan = require('morgan');//morgan for debugging
 const chalk  = require('chalk'); //beautify the console window
+//database connection code...
+require('./db/dbConnection');
+
+
 
 //initilise the express
 const app = express();
+
 
 //declare the port number 
 
@@ -30,6 +35,10 @@ app.get('/',(req,res)=>{
 
 
 //listening the port
-app.listen(__port,()=>{
-    console.log(chalk.bgBlack.greenBright("Server is running at port ", __port));
-})
+try {
+    app.listen(__port,()=>{
+        console.log(chalk.bgYellowBright.greenBright("Server is running at port ", __port));
+    })
+} catch (error) {
+    console.log(chalk.bgBlackBright.redBright("ERROR : BSPT 01"))
+}
