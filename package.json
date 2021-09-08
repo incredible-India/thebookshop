@@ -15,5 +15,14 @@
   "bugs": {
     "url": "https://github.com/incredible-India/thebookshop/issues"
   },
-  "homepage": "https://github.com/incredible-India/thebookshop#readme"
+  "homepage": "https://github.com/incredible-India/thebookshop#readme",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.5",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.12"
+  }
 }
