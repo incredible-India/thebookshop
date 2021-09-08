@@ -6,6 +6,8 @@ const express =require('express'); //express template engine
 const cors = require('cors');//for cors error
 const morgan = require('morgan');//morgan for debugging
 const chalk  = require('chalk'); //beautify the console window
+const pug = require('pug'); //for the templates in views
+const path = require('path');//path built in module
 //database connection code...
 require('./db/dbConnection');
 
@@ -20,6 +22,9 @@ const app = express();
 const __port = process.env.PORT || 80;
 
 //using middlewere
+app.set('view engine', 'pug');
+app.set('views','./views/pug');//set up the template engine
+app.use(express.static(path.join(__dirname, './'))); //for the static files
 app.use(morgan('dev'));//morgan
 app.use(cors());//cors error
 
@@ -29,7 +34,8 @@ app.use(cors());//cors error
 //home page
 
 app.get('/',(req,res)=>{
-    res.send("Hello World..");
+    
+    res.render('index',{name : "Himanshu"});
 })
 
 
