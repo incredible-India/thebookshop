@@ -1,9 +1,20 @@
 extends ./componants/base.pug
 
 
-block title 
-    title BookShop 
+block title
+    title Book Shop
+
+block link
+    style 
+        include ./../assets/css/index.css
+
+    
 
 block nav 
     include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+
+block content 
+    include ./componants/mainPfst.pug
+    include ./componants/secondContent.pug
     

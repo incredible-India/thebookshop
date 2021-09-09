@@ -1,0 +1,54 @@
+
+.limain{
+    list-style: none;
+    margin-left: 5px;
+    
+}
+
+.username{
+    font-weight: 600;
+    color: white;
+    font-size: 21px;
+    letter-spacing: 2px;
+    padding: 8px;
+    margin-left: 5px;
+}
+
+.username:hover{
+    color: white;
+}
+
+.secnav{
+    background-color: black;
+    position: sticky;
+    top: 55px;
+    z-index: 9;
+}
+
+.drpbg  {
+    background-color: black;
+    color: white;
+
+}
+
+.drpbg li {
+    background-color: black;
+   
+}
+
+.drpbg li a {
+    color: white;
+}
+
+.drpbg li a:hover {
+    background-color: red;
+}
+
+/* @media only screen and (max-width: 400px) {
+    
+    .secnav{
+        top: 107px;
+    }
+   
+
+} */

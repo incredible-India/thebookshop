@@ -1,0 +1,64 @@
+@font-face {
+    font-family: shop;
+    src: url(./../../../public/src/fonts/shop.ttf);
+}
+.book{
+    text-align: center;
+    font-family: shop;
+    color: white;
+    letter-spacing: 3px;
+    font-size: 35px;
+    
+}
+.shop{
+    color: black;
+    padding: 10px;
+}
+
+.searchBOOK{
+    padding: 10px;
+  
+}
+.customDesignNAV {
+
+    background-color: red;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+
+}
+
+.mac{
+    display: flex;
+    flex-direction: row;
+}
+
+.heading{
+    
+    text-align: start;
+    
+}
+
+@media only screen and (max-width: 600px) {
+    
+ 
+    .mac
+    {
+        flex-direction: column;
+    }
+
+}
+
+::-webkit-scrollbar{
+
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb{
+    
+    background-image: linear-gradient(red,white);
+   
+      border-radius: 20px;
+  }
+

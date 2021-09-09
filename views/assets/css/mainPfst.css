@@ -1,0 +1,32 @@
+.fstdta{
+    margin-top: 35px;
+}
+
+.dta {
+    color: white;
+    /* text-align: end; */
+
+}
+
+.d {
+    color: rgb(64,123,225);
+    font-weight: 800;
+
+}
+
+.frd{
+    color: rgb(146,227,169);
+    font-weight: 800;
+}
+
+.prtc{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.margx{
+    margin-top: 10px;
+}

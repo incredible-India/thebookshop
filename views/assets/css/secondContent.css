@@ -1,0 +1,34 @@
+.mybooks {
+    overflow-x: hidden;
+    margin-top: 35px;
+    overflow-y: hidden;
+    margin: 15px;
+}
+
+.card {
+    background-color: #191919;
+    color: white;
+    border-color: red;
+    padding: 10px;
+}
+
+.c{
+    color: red;
+    font-weight: 600px;
+    border-color: red;
+}
+
+@media only screen and (max-width: 900px) {
+    
+    .card {
+        width: 12rem;
+       
+    }
+
+    .img-top {
+        height: 120px;
+    }
+   
+
+}
+

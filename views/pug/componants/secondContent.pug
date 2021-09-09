@@ -1,0 +1,32 @@
+
+script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
+script(src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer")
+link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" integrity="sha512-17EgCFERpgZKcm0j0fEq1YCJuyAWdz9KUtv1EjVuaOz8pDnh/0nZxmU6BBXwaaxqoi9PQXnRWqlcDB027hgv9A==" crossorigin="anonymous" referrerpolicy="no-referrer")
+link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer")
+
+style 
+    include ./../../assets/css/secondContent.css
+-var k = [1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,,2,2,2,3,6,6,5]
+.container-fluid
+    .row.mybooks
+        for i in k
+    
+                    .col
+                        .card(style='width: 18rem;')
+                            img.card-img-top(src='./../../../public/src/topRandomBooks/2nd.jpg' alt='Card image cap' height="200px")
+                            .card-body
+                                h5.card-title Card title
+                                h6.card-title ₹ 100 
+                                button.btn.btn-outline-light.c(type="submit") More Details
+                    span -  
+
+
+
+
+
+
+
+
+
+script 
+    include ./../../assets/js/secondContent.js
