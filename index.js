@@ -8,6 +8,7 @@ const morgan = require('morgan');//morgan for debugging
 const chalk  = require('chalk'); //beautify the console window
 const pug = require('pug'); //for the templates in views
 const path = require('path');//path built in module
+const userRoute = require('./controller/user');
 //database connection code...
 require('./db/dbConnection');
 
@@ -22,6 +23,7 @@ const app = express();
 const __port = process.env.PORT || 80;
 
 //using middlewere
+app.use('/newregistration',userRoute)
 app.set('view engine', 'pug');
 app.set('views','./views/pug');//set up the template engine
 app.use(express.static(path.join(__dirname, './'))); //for the static files
@@ -34,8 +36,10 @@ app.use(cors());//cors error
 //home page
 
 app.get('/',(req,res)=>{
+
+    let navBarOPT = {"Sign in" : "/newregistration","Action" : "#","Hello World" : "#" }
     
-    res.render('index',{name : "Himanshu"});
+    res.render('index',{name : "hello",navTexts : navBarOPT});
 })
 
 

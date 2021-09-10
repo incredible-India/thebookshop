@@ -1,0 +1,35 @@
+extends ./componants/base.pug
+
+
+block title 
+    title Registration
+
+block link
+    style
+        include ./../assets/css/otpPmobile.css
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+block content
+    -var noError = errorCode
+    .container.topELE 
+        .row 
+            .col-md-6 
+                img.img-fluid(src="./../../../public/src/svg/Ebook.svg", alt="new man")
+
+            .col-md-6 
+                .container-justify-content-center.formdta 
+                    form(action="/newregistration/veryfyphone", method="post")
+                        label(for="mobile") Mobile Number
+                        input.form-control.mobn(type="number" placeholder="Mobile Number" id='mobile')
+                        .buttons 
+                            button.btn.btn-outline-danger.sub(type="submit") Verify Number
+                            button.btn.btn-outline-info.google(type="submit") Sign In With Google
+                        if (noError)
+
+                            p.errMsg Mobile Number is already in used please try to log in..
+                        
+                    a.log(href="/") Log In 
+
+//- errorCode is the parameter its show either error should be shown or not 
+                    

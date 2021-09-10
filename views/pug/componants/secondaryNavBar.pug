@@ -7,12 +7,15 @@ style
             i.fas.fa-user 
             |   User
         ul.dropdown-menu.drpbg(aria-labelledby='navbarDropdownMenuLink')
-            li
-                a.dropdown-item(href='#') Sign in
-            li
-                a.dropdown-item(href='#') Another action
-            li
-                a.dropdown-item(href='#') Something else here
+            for i , j in navTexts 
+
+                li
+                    a.dropdown-item(href= i) #{j}
+            //- li
+            //-     a.dropdown-item(href='#') Another action
+            //- li
+            //-     a.dropdown-item(href='#') Something else here
     
 
 
+//- navTexts will be a object of text and their link pair pass it when you render the pug file with same name 'navTexts'
