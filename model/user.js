@@ -27,7 +27,7 @@ Newuser = new schema({
        
     },
 
-    comments: [{ body: String, date: Date ,bookid : String}],
+    // comments: [{ body: String, date: Date ,bookid : String}],
 
     mobile : {
 
@@ -42,9 +42,17 @@ Newuser = new schema({
     }
 
     ,
-    address :{
-        type :String
+    state :{
+        type :String,
+        required :true
     },
+    
+    
+    city :{
+        type :String,
+        required :true
+    },
+    
 
     password :{
         type : String,

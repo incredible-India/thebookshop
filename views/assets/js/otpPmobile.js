@@ -1,4 +1,5 @@
 
+
 document.getElementsByClassName('validatemob')[0].addEventListener('submit',(e)=>{
     // e.preventDefault();
     let mob = document.getElementsByClassName('mobn')[0].value
@@ -12,4 +13,5 @@ document.getElementsByClassName('validatemob')[0].addEventListener('submit',(e)=
     }
     
 })
+
 

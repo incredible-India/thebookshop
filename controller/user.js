@@ -5,14 +5,17 @@ const path = require('path');
 const validation = require('./../middleware/validation');
 
 
-express().set('view engine', 'pug')
-express().set('views', './../All templates/')
+
+
+router.use(express.static(path.join(__dirname + './../')))
+
+// express().set('view engine', 'pug')
+// express().set('views', './../views/pug/')
 
 router.use(express.urlencoded({ extended: true }))//parsing data from url in json formate
 
 
 
-router.use(express.static(path.join(__dirname + './../')))
 
 // var urlHash = require('url-hash');
  
@@ -23,6 +26,8 @@ router.use(express.static(path.join(__dirname + './../')))
 
 // console.log(newUrl);
 
+
+//new registration will be here mobile number will be asked
 router.get('/',(req,res)=>{
    
     //this is option in navbar of user icon
@@ -35,7 +40,7 @@ router.get('/',(req,res)=>{
 })
 
 
-
+//for the otp varification we will send in this route
 
 
 router.post('/verifyphone',async(req,res)=>{
@@ -70,7 +75,19 @@ router.post('/verifyphone',async(req,res)=>{
 
 
 
+//after entering the otp ,we will varyfy that otp in this router
 
+router.post('/verificationSuccess',(req,res)=>{
+
+    let mynavBar = {"my cart" : "/","your order" : "#","log in" : "/"}
+   
+
+    res.setHeader('Content-Type',"text/html");
+    // return  res.status(200).render('otpPmobile',{"name": "Himanshu", navTexts :mynavBar ,"errorCode" : 0,
+    // "varified" : 0})
+    res.status(200).render('newRegistrationForm',{"name": "Himanshu", navTexts :mynavBar})
+
+})
 
 
 

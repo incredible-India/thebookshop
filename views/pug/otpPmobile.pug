@@ -32,11 +32,14 @@ block content
                                 p.errMsg #{errMSG}
                         
                         a.log(href="/") Log In
+                     
+                        script 
+                            include ./../assets/js/otpPmobile.js
                 else
                     .container-justify-content-center.formdta 
-                        form(action="/newregistration/verificationSuccess", method="post" )
+                        form.otpValidator(action="/newregistration/verificationSuccess", method="post" )
                             label(for="mobile") An OTP send to your mobile number
-                            input.form-control.mobn(type="number" placeholder="OTP" id='mobile' name="otp")
+                            input.form-control.otp(type="number" placeholder="OTP" id='mobile' name="otp")
                             .buttons 
                                 button.btn.btn-outline-danger.sub(type="submit") Enter
                                
@@ -45,11 +48,11 @@ block content
                                 p.errMsg Invalid OTP
                         
                         a.log(href="/") Log In 
+                    script 
+                            include ./../assets/js/otpvalidator.js
 
 
-block script 
-    script 
-        include ./../assets/js/otpPmobile.js
+
 
 
 //- errorCode is the parameter its show either error should be shown or not 

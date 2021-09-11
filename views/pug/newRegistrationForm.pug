@@ -1,0 +1,68 @@
+extends ./componants/base.pug 
+
+block title 
+    title Registration
+
+block link
+    style
+        include ./../assets/css/newRegistrationForm.css
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+
+block content 
+ 
+    .container 
+        form.needs-validation.row.x(novalidate='')
+            .col-md-4 
+                
+                label(for='validationCustom01') First name*
+                input#validationCustom01.form-control(type='text' placeholder='First name' value='Mark' required='')
+                .valid-feedback
+                    | Looks good!
+            .col-md-4
+                label(for='validationCustom02') Last name
+                input#validationCustom02.form-control(type='text' placeholder='Last name' value='Otto' required='')
+                .valid-feedback
+                     Looks good!
+            .col-md
+                label(for='validationCustomUsername') Username*
+                .input-group
+                    .input-group-prepend
+                        span#inputGroupPrepend.input-group-text @
+                    input#validationCustomUsername.form-control(type='text' placeholder='Username' aria-describedby='inputGroupPrepend' required='')
+                    .invalid-feedback
+                        | Please choose a username.
+            .row.x 
+                .col-md 
+                    label(for='validationCustom03') City
+                    input#validationCustom03.form-control(type='text' placeholder='City' required='')
+                    .invalid-feedback
+                        | Please provide a valid city.
+                .col-md
+                    label(for='validationCustom04') State*
+                    input#validationCustom04.form-control(type='text' placeholder='State' required='')
+                    .invalid-feedback
+                        | Please provide a valid state.
+                .col-md 
+                    label(for='validationCustom05') Zip
+                    input#validationCustom05.form-control(type='number' placeholder='Zip' required='')
+                    .invalid-feedback
+                        | Please provide a valid zip.
+
+            .row.x 
+                .col-md 
+                    label(for='validationCustom03') Mobile
+                    input#validationCustom03.form-control(type='text' placeholder='City' required='')
+                    .invalid-feedback
+                        | Please provide a valid city.
+                .col-md
+                    label(for='validationCustom04') Alternate Mobile
+                    input#validationCustom04.form-control(type='text' placeholder='State' required='')
+                    .invalid-feedback
+                        | Please provide a valid state.
+                .col-md 
+                    label(for='validationCustom05' title="Date of Birth") D.O.B
+                    input#validationCustom05.form-control(type='date' placeholder='Zip' required='')
+                    .invalid-feedback
+                        | Please provide a valid zip.
