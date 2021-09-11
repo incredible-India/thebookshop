@@ -50,7 +50,7 @@ Newuser = new schema({
     
     city :{
         type :String,
-        required :true
+        
     },
     
 

@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const {check ,validationResult} = require('express-validator')
 const router = express.Router();//routing for urls
 // const bodyParser = require('body-parser')
 const path = require('path');
@@ -25,7 +26,7 @@ router.use(express.urlencoded({ extended: true }))//parsing data from url in jso
 // var newUrl = urlHash.create(url);
 
 // console.log(newUrl);
-
+var mobileNumber ;//a global variable to store mobile number
 
 //new registration will be here mobile number will be asked
 router.get('/',(req,res)=>{
@@ -64,8 +65,10 @@ router.post('/verifyphone',async(req,res)=>{
          "varified" : 1})
        }else
        {
+           mobileNumber = req.body.mobile;
         return  res.status(200).render('otpPmobile',{"name": "Himanshu", navTexts :allNavOptions ,"errorCode" : 0,
         "varified" : 0})
+        
        }
 
       
@@ -85,10 +88,54 @@ router.post('/verificationSuccess',(req,res)=>{
     res.setHeader('Content-Type',"text/html");
     // return  res.status(200).render('otpPmobile',{"name": "Himanshu", navTexts :mynavBar ,"errorCode" : 0,
     // "varified" : 0})
-    res.status(200).render('newRegistrationForm',{"name": "Himanshu", navTexts :mynavBar})
+    res.status(200).render('newRegistrationForm',{"name": "Himanshu", navTexts :mynavBar,mobilenumber: mobileNumber})
 
 })
 
 
+//after felling the registration we will check the form 
+
+router.post('/checking/redirecting',[
+
+    check('fname').not().isEmpty().trim(),
+    check('email').isEmail().trim(),
+    check('state').not().isEmpty(),
+    check('pass').not().isEmpty().trim(),
+  
+  
+    
+
+
+],(req,res)=>{
+
+    //checking the registration form..
+    //first express validator will check the information
+    let mynavbar = {"homepage":"/"}
+    // todo file image worlk only
+    const formError = validationResult(req);
+
+
+    res.setHeader("Content-Type","text/html");
+
+    if(!formError.isEmpty())
+    {
+       return res.status(403).send(`<h1> Error Code BSDB 004 ${formError.errors[0].param}`)
+    }
+
+    //now again check all the validations 
+    var mydata = validation.checkValidation(req.body,mobileNumber)
+//mydata will return err =0 or 1 if 0 mean no error redirect the home page after saving in dbs if 1 mean there is error
+    if(mydata.err) //if any error in form
+    {
+     return  res.status(403).render('newRegistrationForm',{navTexts : mynavbar,err : mydata.err, msg : mydata.msg})
+
+    }else
+    {
+      return   res.status(200).json(mydata)
+    }
+
+})
+
+//again make object clearly to pass for response
 
 module.exports = router;
