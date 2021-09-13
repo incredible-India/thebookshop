@@ -49,7 +49,7 @@ function checkValidation(obj,mobileNumber)
     }else if(obj.pass != obj.cnfpass)
     {
         return {err : 1 , msg : "Password and confirm password does not match.."}
-    }else if(mobileNumber == "" || mobileNumber.length < 10 )
+    }else if(mobileNumber.length == 0 || mobileNumber.length < 10 )
     {
         return {err : 1 , msg : "please enter valid  mobile number.."}
     }
@@ -63,23 +63,36 @@ function checkValidation(obj,mobileNumber)
     {
             //well no need to write bellow`s code coz we can return directly obj  
 
-      for (i in obj)
-      {
+            let againNmberCheck = checkExistance(mobileNumber);
 
-          if(obj[i] == "")
-          {
-            //   obj[i] = null
-              datatobesaved[i] = null
-          }else
-          {
-            datatobesaved[i] = obj[i]
-          }
-      }
-      datatobesaved.err = 0;
- 
+            if(againNmberCheck)
+            {
+                console.log(againNmberCheck);
+
+                return {err : 2}
+
+            }else
+            {
+                for (i in obj)
+                {
+          
+                    if(obj[i] == "")
+                    {
+                      //   obj[i] = null
+                        datatobesaved[i] = null
+                    }else
+                    {
+                      datatobesaved[i] = obj[i]
+                    }
+                }
+                datatobesaved.err = 0;
+           
+               
+                
+                return datatobesaved;
+            }
+
      
-      
-      return datatobesaved;
     }
 
 }

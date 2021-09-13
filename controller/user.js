@@ -2,8 +2,11 @@ const express = require('express');
 const {check ,validationResult} = require('express-validator')
 const router = express.Router();//routing for urls
 // const bodyParser = require('body-parser')
+const bcryptjs = require('bcryptjs');
+const fileUpload = require('express-fileupload');
 const path = require('path');
 const validation = require('./../middleware/validation');
+const user = require('./../model/user');
 
 
 
@@ -14,7 +17,7 @@ router.use(express.static(path.join(__dirname + './../')))
 // express().set('views', './../views/pug/')
 
 router.use(express.urlencoded({ extended: true }))//parsing data from url in json formate
-
+router.use(fileUpload());//file upload middleware
 
 
 
@@ -101,12 +104,13 @@ router.post('/checking/redirecting',[
     check('email').isEmail().trim(),
     check('state').not().isEmpty(),
     check('pass').not().isEmpty().trim(),
+    check('gender').not().isEmpty()
   
   
     
 
 
-],(req,res)=>{
+],async (req,res)=>{
 
     //checking the registration form..
     //first express validator will check the information
@@ -125,15 +129,65 @@ router.post('/checking/redirecting',[
     //now again check all the validations 
     var mydata = validation.checkValidation(req.body,mobileNumber)
 //mydata will return err =0 or 1 if 0 mean no error redirect the home page after saving in dbs if 1 mean there is error
-    if(mydata.err) //if any error in form
+    if(mydata.err == 1) //if any error in form
     {
-     return  res.status(403).render('newRegistrationForm',{navTexts : mynavbar,err : mydata.err, msg : mydata.msg})
+        return res.redirect('/newregistration')
+    //  return  res.status(403).render('newRegistrationForm',{navTexts : mynavbar,err : mydata.err, msg : mydata.msg,k:1,mdata : mydata,mobilen : mobileNumber})
 
     }else
     {
-      return   res.status(200).json(mydata)
-    }
+      
 
+        if(req.files)
+        {
+             filename = `${req.files.userimg.md5}_${req.files.userimg.name}`;
+
+
+            req.files.userimg.mv(path.join(__dirname,"./../public/src/userimage/") + filename,(err)=>{
+                if(err)
+                {
+                    return res.status(403).send(`<h1> ERROR BSDB 006  ${err} </h1>`);
+                }
+            })
+
+        }else
+        {
+            filename = null;
+        }
+  
+     //now time to save all the information database 
+     if(await mydata.err == 2)
+     {
+         return res.status(200).send('<h1>You are the already the member of the BookShop </h1> <br> ')
+     }else{
+
+     
+   
+     //all information are available in mydata and filename and mobileNumber
+     let USER = new user({
+         fname : mydata.fname,
+         lname : mydata.lname,
+         email : mydata.email,
+         gender : mydata.gender,
+         state : mydata.state,
+         city : mydata.city,
+         password :bcryptjs.hashSync(mydata.pass,10),
+         mobile : mobileNumber,
+         altmobile : mydata.altmobile,
+         zip : mydata.zip,
+         img : filename,
+         dob:mydata.dob,
+
+
+
+     })
+
+     USER.save()
+
+    return  res.send(USER)
+     }
+    }
+    
 })
 
 //again make object clearly to pass for response

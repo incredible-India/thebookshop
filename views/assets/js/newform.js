@@ -73,6 +73,16 @@ document.forms[1].onsubmit = (e)=>{
         return;
 
     }
+    if(document.getElementsByClassName('gender')[0].value == 0)
+    {
+   
+        alert("Please Select gender")
+        e.preventDefault();
+        e.stopPropagation();
+       
+        return;
+
+    }
     
     
     if(document.getElementsByClassName('pass')[0].value !== document.getElementsByClassName('cnfpass')[0].value)
@@ -97,6 +107,15 @@ document.forms[1].onsubmit = (e)=>{
          if(document.getElementsByClassName('altphone')[0].value.length != 10)
          {
             alert("invalid alternate mobile number")
+            e.preventDefault();
+            e.stopPropagation();
+         }
+    }
+    if(document.getElementsByClassName('zip')[0].value.length >0 )
+    {
+         if(document.getElementsByClassName('zip')[0].value.length != 6)
+         {
+            alert("Invalid Zip")
             e.preventDefault();
             e.stopPropagation();
          }

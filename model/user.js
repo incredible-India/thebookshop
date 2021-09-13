@@ -9,7 +9,8 @@ Newuser = new schema({
         type : String,
         required : true,
         min: [3, 'Too short name'],
-    max: 12
+    max: 12,
+    unique:true,
     }
 ,
     lname : {
@@ -33,11 +34,12 @@ Newuser = new schema({
 
         type : Number,
         required :true,
+        unique :true,
         
 
     },
 
-    ultmobile : {
+    altmobile : {
         type : Number,
     }
 
@@ -62,8 +64,9 @@ Newuser = new schema({
 
     }
     ,  img :{
-        data : Buffer,
-        ContentType : String
+        type : String,
+        
+               
     }
     ,
     dob :{
@@ -73,6 +76,10 @@ Newuser = new schema({
     mkid :{
         type :Date,
         default : Date.now()
+    }
+    , gender : {
+        type : String,
+        required :true
     }
 
 })

@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dd32bb83-7c0f-4247-9474-42bf951d88b8" name="Changes" comment="" />
+    <list default="true" id="dd32bb83-7c0f-4247-9474-42bf951d88b8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/controller/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/assets/css/newRegistrationForm.css" beforeDir="false" afterPath="$PROJECT_DIR$/views/assets/css/newRegistrationForm.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/assets/js/newform.js" beforeDir="false" afterPath="$PROJECT_DIR$/views/assets/js/newform.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/pug/newRegistrationForm.pug" beforeDir="false" afterPath="$PROJECT_DIR$/views/pug/newRegistrationForm.pug" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

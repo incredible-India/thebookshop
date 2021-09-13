@@ -12,6 +12,7 @@ block nav
 
 block content
     -var mobile = mobilenumber
+ 
 
     .container 
         p.lol
@@ -21,19 +22,19 @@ block content
             p.l #{msg}
  
     .container 
-        form.needs-validation.row.x(novalidate='' action="/newregistration/checking/redirecting" method="POST")
+        form.needs-validation.row.x(novalidate='' action="/newregistration/checking/redirecting" method="POST" enctype="multipart/form-data")
             .col-md-4 
                 
                 label(for='validationCustom01') First name
                 span.l *
-                input#validationCustom01.form-control.fname(type='text' placeholder='First name'  required='' name="fname")
+                input#validationCustom01.form-control.fname(type='text' placeholder='First name'  required='' name="fname" )
                 .valid-feedback
                     | Looks good!
                 .invalid-feedback
                         | Please Enter the first Name.
             .col-md-4
                 label(for='validationCustom02') Last name
-                input#validationCustom02.form-control(type='text' placeholder='Last name' name="lname")
+                input#validationCustom02.form-control(type='text' placeholder='Last name' name="lname" )
                 
             .col-md
                 label(for='validationCustomUsername') email
@@ -60,19 +61,29 @@ block content
               
                 .col-md 
                     label(for='validationCustomc05') Zip
-                    input#validationCustomc05.form-control(type='number' placeholder='Zip' name="zip")
+                    input#validationCustomc05.form-control.zip(type='number' placeholder='Zip' name="zip")
                     //- .invalid-feedback
                     //-     | Please provide a valid zip.
+
+                .col-md
+                    label(for='valii') Gender
+                    span.l *
+                    select#valii.form-select.gender(name="gender")
+                        option(value="0" selected disabled) Select Gender 
+                        option(value="m") Male
+                        option(value="f") Female
+                        option(value="t") Transgender 
+
 
             .row.x 
                 .col-md 
                     label(for='validationCustom003') Mobile
-                    input#validationCustom003.form-control(type='number' placeholder='mobile'  value=mobile disabled name="mobile")
+                    input#validationCustom003.form-control(type='number' placeholder='mobile'  value=mobile disabled  name="mobile")
                     .invalid-feedback
                         | Please provide a valid mobile number.
                 .col-md
                     label(for='validationCustom004') Alternate Mobile
-                    input#validationCustom004.form-control.altphone(type='number' placeholder='mobile number' name="altmobile")
+                    input#validationCustom004.form-control.altphone(type='number' placeholder='mobile number' name="altmobile" )
                     //- .invalid-feedback
                     //-     | Please provide a valid state.
                 .col-md 
@@ -96,7 +107,7 @@ block content
                         | Please provide a password.
                 .col-md 
                     label(for='validationCustom05' title="Date of Birth") User Image
-                    input#validationCustom05.form-control(type='file' placeholder='Image' name="userimg")
+                    input#validationCustom05.form-control(type='file' placeholder='Image' name="userimg" accept="image/*")
                     //- .invalid-feedback
                     //-     | Please provide a valid zip.
             .row.x
