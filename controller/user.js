@@ -7,7 +7,7 @@ const fileUpload = require('express-fileupload');
 const path = require('path');
 const validation = require('./../middleware/validation');
 const user = require('./../model/user');
-
+const cookieParser = require('cookie-parser');//saving the cookies
 
 
 
@@ -156,12 +156,17 @@ router.post('/checking/redirecting',[
         }
   
      //now time to save all the information database 
-     if(await mydata.err == 2)
-     {
-         return res.status(200).send('<h1>You are the already the member of the BookShop </h1> <br> ')
-     }else{
+  
 
-     
+     //again we will check mobie number...
+
+     let checkAgain =await  user.findOne({mobile : mobileNumber})
+    //   console.log(checkAgain);
+     if(checkAgain)
+     {
+         //if mobile number already exist we will send this
+         return res.status(200).send("<h1> YOU ARE ALREADY MEMBER PLEASE VISIT TO LOGIN PAGE</h1>")
+     }
    
      //all information are available in mydata and filename and mobileNumber
      let USER = new user({
@@ -182,14 +187,90 @@ router.post('/checking/redirecting',[
 
      })
 
-     USER.save()
+     const token  =  USER.genrateTOKEN();
 
-    return  res.send(USER)
-     }
+
+    
+
+     res.cookie('jwt', token, { expires: new Date(Date.now() + (2 * 24 * 60 * 60 * 1000)) }); // generated token we will save in cookie and varify this latar when user will login
+
+
+    return  res.status(200).redirect('/');
+     
     }
     
 })
 
 //again make object clearly to pass for response
+
+
+//login optional 
+
+router.get('/login', (req,res) => {
+
+    mynavBar = {"Home" : '/',"Sign in" : "/newregistration"}
+
+    res.setHeader('Content-Type', 'text/html');
+
+    res.render('login',{"name": "Himanshu", navTexts :mynavBar,err : 0})
+
+})
+
+//login page 
+
+router.post('/userauth/tokensave',[
+    check('mobile').not().isEmpty(),
+    check('password').not().isEmpty()
+],async  (req,res) => {
+
+    mynavBar = {"Home" : '/',"Sign in" : "/newregistration"}
+
+    const errorLOGIN = validationResult(req);
+
+    res.setHeader("Content-Type","text/html");
+
+    if(!errorLOGIN.isEmpty())
+    {
+       return res.status(403).send(`<h1> Error Code BSDB 004 ${formError.errors[0].param}`)
+    }
+
+
+    if(req.body.mobile.length != 10){
+
+        return res.status(403).render('login',{navTexts :mynavBar , err : 1})
+    }
+
+    let checkUserInfo = await  user.findOne({mobile : req.body.mobile});
+
+
+    if(checkUserInfo)
+    {
+        let matchPassword = bcryptjs.compareSync(req.body.password, checkUserInfo.password)
+        
+       if(matchPassword)
+       {
+        
+
+
+        const token  =  checkUserInfo.genrateTOKEN();
+
+        res.cookie('jwt', token, { expires: new Date(Date.now() + (2 * 24 * 60 * 60 * 1000)) });
+
+        return  res.status(200).redirect('/');
+
+       }else
+       {
+        return res.status(403).render('login',{navTexts :mynavBar , err : 1})
+       }
+
+    }else
+    {
+        return res.status(403).render('login',{navTexts :mynavBar , err : 1})
+    }
+
+
+})
+
+
 
 module.exports = router;

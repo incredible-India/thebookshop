@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-
+const jwt = require('jsonwebtoken');
 var schema  = mongoose.Schema;
-
+require('dotenv').config();
 
 Newuser = new schema({
 
@@ -10,7 +10,7 @@ Newuser = new schema({
         required : true,
         min: [3, 'Too short name'],
     max: 12,
-    unique:true,
+
     }
 ,
     lname : {
@@ -24,11 +24,12 @@ Newuser = new schema({
     email : {
         type : String,
         required :true,
-        unique :true,
+     
        
     },
 
-    // comments: [{ body: String, date: Date ,bookid : String}],
+ 
+    
 
     mobile : {
 
@@ -80,10 +81,32 @@ Newuser = new schema({
     , gender : {
         type : String,
         required :true
-    }
-
+    }, 
+    tokenSchema : [{tokendbs:{
+        type:String,
+        required:true
+    }}]
 })
 
+
+Newuser.methods.genrateTOKEN= function()
+{
+    const tokenGenrate = jwt.sign({_id : this._id}, process.env.SECRET_KEY);//this will generate a token
+
+    //now save in database this token 
+ 
+    this.tokenSchema = this.tokenSchema.concat( {tokendbs : tokenGenrate} );
+ 
+ 
+    this.save()
+    .then(err=>{
+        console.log(err,"check the error in modal userJS");
+    })
+
+    
+    return tokenGenrate;
+ 
+}
 
 
 

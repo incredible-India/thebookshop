@@ -63,16 +63,8 @@ function checkValidation(obj,mobileNumber)
     {
             //well no need to write bellow`s code coz we can return directly obj  
 
-            let againNmberCheck = checkExistance(mobileNumber);
-
-            if(againNmberCheck)
-            {
-                console.log(againNmberCheck);
-
-                return {err : 2}
-
-            }else
-            {
+     
+            
                 for (i in obj)
                 {
           
@@ -90,7 +82,7 @@ function checkValidation(obj,mobileNumber)
                
                 
                 return datatobesaved;
-            }
+            
 
      
     }

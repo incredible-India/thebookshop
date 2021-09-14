@@ -11,6 +11,8 @@ const path = require('path');//path built in module
 const userRoute = require('./controller/user');
 //database connection code...
 require('./db/dbConnection');
+const cookieParser = require('cookie-parser'); //cookies
+const isAuth = require('./authentication/userAuth');//web authentication and password 
 
 
 
@@ -29,17 +31,29 @@ app.set('views','./views/pug');//set up the template engine
 app.use(express.static(path.join(__dirname, './'))); //for the static files
 app.use(morgan('dev'));//morgan
 app.use(cors());//cors error
-
+app.use(cookieParser());//cookies parser middleware
 
 //routing code....
 
 //home page
 
-app.get('/',(req,res)=>{
+app.get('/',isAuth.authUser,async (req,res)=>{
 
-    let navBarOPT = {"Sign in" : "/newregistration","Action" : "#","Hello World" : "#" }
     
-    res.render('index',{name : "hello",navTexts : navBarOPT});
+
+   let isauth = await req.isauth; 
+
+   if(isauth)
+   {
+      return res.status(200).render('index',{name : "hello",navTexts : {"Sign in" : "/newregistration","Action" : "#","Hello World" : "#" ,"login" : '/newregistration/login'},username : isauth.fname});
+   }else
+   {
+      return  res.status(200).render('index',{name : "hello",navTexts : {"Sign in" : "/newregistration","Action" : "#","Hello World" : "#" ,"login" : '/newregistration/login'},username : "User"});
+   }
+
+
+    
+    
 })
 
 

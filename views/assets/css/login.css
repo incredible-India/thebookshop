@@ -1,0 +1,70 @@
+body { 
+    background-color: #191919;
+}
+
+
+.formdta {
+    border-color: rgb(146, 227, 169);
+    border: 1px solid rgb(146, 227, 169);
+    padding: 20px;
+    margin-top: 25px;
+} 
+
+form {
+    padding: 20px;
+    margin: 5px;
+}
+
+.topELE{
+    margin-top: 15px;
+    padding: 20px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+
+button {
+    width: 100%;
+    margin-top: 5px 12px;
+}
+
+label{
+    color: white;
+    margin-bottom: 8px;
+    margin-top: 10px;
+}
+
+.sub{
+    margin-top: 10px;
+}
+
+
+
+
+
+.log {
+    color: rgb(146, 227, 169);
+    font-weight: 500;
+    margin-top: 19px;
+    margin-left: 25px;
+    text-decoration: none;
+}
+
+.frd{
+    color: rgb(146,227,169);
+    font-weight: 600;
+}
+
+
+.logs {
+    color: red;
+    font-weight: 500;
+    margin-top: 19px;
+    margin-left: 25px;
+    text-decoration: none;
+}

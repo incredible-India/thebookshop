@@ -1,0 +1,34 @@
+extends ./componants/base.pug
+
+
+block title 
+    title LOG IN
+block link
+    style
+        include ./../assets/css/login.css
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+block content
+    .container 
+        .row 
+            .col-md-6 
+                img.img-fluid(src="./../../../public/src/svg/login.svg", alt="new man")
+            .col-md-6 
+                .container-justify-content-center.formdta 
+                    
+                        
+                        form.validatemob(action="/newregistration/userauth/tokensave", method="post")
+                            label(for="mobile") Mobile Number
+                            input.form-control.mobn(type="number" placeholder="Mobile Number" id='mobile' name="mobile")
+                            label(for="mobilee") Password
+                            input.form-control.mobn(type="number" placeholder="Password" id='mobilee' name="password")
+                            .buttons 
+                                button.btn.btn-outline-light.sub.frd(type="submit") Log IN
+                                button.btn.btn-outline-info.sub(type="submit") Log In With OTP
+                                
+                         
+                        
+                        a.log(href="/") Forgot Password
+                        if(err)
+                            p.errmessage.logs Incorrect Mobile or Password
