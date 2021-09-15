@@ -45,10 +45,10 @@ app.get('/',isAuth.authUser,async (req,res)=>{
 
    if(isauth)
    {
-      return res.status(200).render('index',{name : "hello",navTexts : {"Sign in" : "/newregistration","Action" : "#","Hello World" : "#" ,"login" : '/newregistration/login'},username : isauth.fname});
+      return res.status(200).render('index',{name : "hello",navTexts : {"Sign in" : "/newregistration","Action" : "#","Hello World" : "#" ,"login" : '/newregistration/login',"logout" : '/newregistration/logout',"My Account" : "/newregistration/myaccount"},username : isauth.fname});
    }else
    {
-      return  res.status(200).render('index',{name : "hello",navTexts : {"Sign in" : "/newregistration","Action" : "#","Hello World" : "#" ,"login" : '/newregistration/login'},username : "User"});
+      return  res.status(200).render('index',{name : "hello",navTexts : {"Sign in" : "/newregistration","Action" : "#","Hello World" : "#" ,"login" : '/newregistration/login',"My Account" : "/newregistration/myaccount"},username : "User"});
    }
 
 

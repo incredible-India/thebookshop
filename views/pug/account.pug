@@ -1,0 +1,95 @@
+extends ./componants/base.pug
+
+
+block title 
+    title LOG IN
+block link
+    style
+        include ./../assets/css/account.css
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+block content 
+    if(userinfo.lname)
+        -var userfullname = userinfo.fname + " " + userinfo.lname
+    else 
+        -var userfullname = userinfo.fname
+    if(userinfo.altmobile)
+        -var altmobile = userinfo.altmobile
+    else
+        -var altmobile = "Not Available"
+
+    if(userinfo.zip)
+        -var zip = userinfo.zip
+    else
+        -var zip = "Not Available" 
+    if (userinfo.gender == 'f')
+        -var gender = "Female"
+    else if(userinfo.gender == 'm')
+        -var gender = "Male"
+    else 
+        -var gender = "Transgender"
+
+    if(userinfo.dob)
+        -var dob = userinfo.dob
+    else
+        -var dob = "Not Available"
+
+
+    .container
+        .container.profile.row.justify-content-center
+            hr
+            .col-md-6.uname
+                if(userinfo.img)
+                    img.img-fluid.userimg(src= './../../../public/src/userimage/' +userinfo.img)
+                else 
+                    img.img-fluid.userimg(src="./../../../public/src/svg/user.svg", alt="")
+                h2.name.u   #{userfullname} 
+                h6.u.gender.city #{gender} 
+                h6.u.city #{userinfo.city},   #{userinfo.state}
+                
+                button.btn.btn-outline-danger.u Edit information
+            .col-md-6.uwname
+                .container
+                    h6.email.u.c Email 
+                    h6.u.mail  #{userinfo.email}
+                    hr
+                .container 
+                    h6.mobile.u.c Mobile 
+                    h6.u.mail  #{userinfo.mobile}
+                    hr
+                .container 
+                    h6.mobile.u.c Alternet Mobile 
+                    h6.u.mail  #{altmobile}
+                    hr
+                .container 
+                    h6.mobile.u.c ZIP
+                    h6.u.mail  #{zip}
+                    hr
+                .container 
+                    h6.mobile.u.c Date Of Birth
+                    h6.u.mail  #{dob}
+                    hr
+                .container 
+                    h6.mobile.u.c Sold Books
+                    h6.u.mail  0
+                    hr
+                .container 
+                    h6.mobile.u.c Uploaded Projects
+                    h6.u.mail  0
+                    hr
+                .container 
+                    h6.mobile.u.c Quiz Compitions
+                    h6.u.mail  0
+                    hr
+                .container 
+                    .row 
+                        .col-md 
+                            h6.mobile.u.c Win
+                            h6.u.mail 0
+                        .col-md
+                            h6.mobile.u.c lose
+                            h6.u.mail 0 
+                    hr
+
+

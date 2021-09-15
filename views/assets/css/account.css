@@ -1,0 +1,44 @@
+body{
+    background-color: #191919;
+}
+
+
+.userimg {
+    width : 250px;
+    height : 250px;
+    border-radius : 50%;
+
+}
+
+ .u {
+     position: relative;
+    color: white;
+    margin-top: 15px;
+    top: 10px;
+ 
+}
+
+
+
+.uname {
+    position: relative;
+} 
+
+.name {
+   letter-spacing: 2px;
+}
+.city{
+    letter-spacing: 2px;
+}
+
+.c {
+    color: red;
+}
+
+.uwname {
+    overflow-x: auto;
+}
+
+hr {
+    color: red;
+}

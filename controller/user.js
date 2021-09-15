@@ -7,9 +7,9 @@ const fileUpload = require('express-fileupload');
 const path = require('path');
 const validation = require('./../middleware/validation');
 const user = require('./../model/user');
-const cookieParser = require('cookie-parser');//saving the cookies
-
-
+const jwt = require('jsonwebtoken');
+const isAuth = require('./../authentication/userAuth'); 
+const cookieParser = require('cookie-parser'); //cookies
 
 router.use(express.static(path.join(__dirname + './../')))
 
@@ -18,7 +18,7 @@ router.use(express.static(path.join(__dirname + './../')))
 
 router.use(express.urlencoded({ extended: true }))//parsing data from url in json formate
 router.use(fileUpload());//file upload middleware
-
+router.use(cookieParser());//
 
 
 // var urlHash = require('url-hash');
@@ -39,7 +39,7 @@ router.get('/',(req,res)=>{
 
     res.setHeader("Content-Type",'text/html'); //response type
     res.status(200).render('otpPmobile',{"name": "Himanshu", navTexts :allNavOptions ,"errorCode" : 0,
-    "varified" : 1})
+    "varified" : 1,username :"User"})
     //errorCode is the paramenter passing in pug file for not showing the error after  entring the mobile number 
 })
 
@@ -65,12 +65,12 @@ router.post('/verifyphone',async(req,res)=>{
        {
        
         return  res.status(200).render('otpPmobile',{"name": "Himanshu", navTexts :allNavOptions ,"errorCode" : 1,"errMSG" : "Mobile Number Already In used Please Try To Login ",
-         "varified" : 1})
+         "varified" : 1,username :"User"})
        }else
        {
            mobileNumber = req.body.mobile;
         return  res.status(200).render('otpPmobile',{"name": "Himanshu", navTexts :allNavOptions ,"errorCode" : 0,
-        "varified" : 0})
+        "varified" : 0,username :"User"})
         
        }
 
@@ -91,7 +91,7 @@ router.post('/verificationSuccess',(req,res)=>{
     res.setHeader('Content-Type',"text/html");
     // return  res.status(200).render('otpPmobile',{"name": "Himanshu", navTexts :mynavBar ,"errorCode" : 0,
     // "varified" : 0})
-    res.status(200).render('newRegistrationForm',{"name": "Himanshu", navTexts :mynavBar,mobilenumber: mobileNumber})
+    res.status(200).render('newRegistrationForm',{"name": "Himanshu", navTexts :mynavBar,mobilenumber: mobileNumber,username :"User"})
 
 })
 
@@ -212,7 +212,7 @@ router.get('/login', (req,res) => {
 
     res.setHeader('Content-Type', 'text/html');
 
-    res.render('login',{"name": "Himanshu", navTexts :mynavBar,err : 0})
+    res.render('login',{"name": "Himanshu", navTexts :mynavBar,err : 0,username :"User"})
 
 })
 
@@ -270,6 +270,51 @@ router.post('/userauth/tokensave',[
 
 
 })
+
+
+// logout the user
+
+router.get('/logout', isAuth.authUser,async function(req, res){
+
+    let UserAuth = await req.isauth;  //it will return either document of user or null
+
+    if (UserAuth) {
+
+        // console.log(UserAuth);
+        UserAuth.tokenSchema = []; //this logout from all devices and make token emapty in dbs
+        res.clearCookie('jwt');  //clear the cookies
+        UserAuth.save(); //save changes the data in dbs
+        return res.redirect('/'); //redirect the home page
+
+    } else {
+        res.clearCookie('jwt');
+        return res.redirect('/');
+
+    }
+
+})
+
+//myaccount the
+
+router.get('/myaccount',isAuth.authUser,async(req,res)=>{
+
+    let isAuthentication = await req.isauth;
+
+    let navbar = {"my cart" : "/","your order" : "#","log in" : "/"}
+
+    res.setHeader('Content-Type', 'text/html');
+
+    if(isAuthentication)
+    {
+        return res.render('account',{name  : "Himanshu" ,navTexts : navbar, username : isAuthentication.fname,userinfo : isAuthentication})
+
+    }else
+    {
+      return  res.redirect('/newregistration/login');
+    }
+
+})
+
 
 
 
