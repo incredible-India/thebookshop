@@ -3,12 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="dd32bb83-7c0f-4247-9474-42bf951d88b8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/controller/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/assets/css/newRegistrationForm.css" beforeDir="false" afterPath="$PROJECT_DIR$/views/assets/css/newRegistrationForm.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/assets/js/newform.js" beforeDir="false" afterPath="$PROJECT_DIR$/views/assets/js/newform.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/pug/newRegistrationForm.pug" beforeDir="false" afterPath="$PROJECT_DIR$/views/pug/newRegistrationForm.pug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/src/userimage/040c51d623b490ee3a6ab06192236f02_family-2112266.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/src/userimage/64dbeec2f687122d54669fbe345eb85c_whycrypto.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/src/userimage/6dccf8d3bd2d8b04c1ef832e1ceaaccc_flower-1817513.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

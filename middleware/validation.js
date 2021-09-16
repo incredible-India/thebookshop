@@ -92,4 +92,27 @@ function checkValidation(obj,mobileNumber)
 
 
 
+function books_Information_errorCheck(bookData,bookImage){{
+
+    if(bookData.bname == "" || bookData.bname.length < 3)
+    {
+        return {err : 1 , message : "Invalid Book Name"}
+    }else if (bookData.pyear == "") return {err : 1 , message : "invalid Published year"}
+    else if(bookData.language == 0) return {err : 1 , message : "Please provide the language of book..."}
+    else if(bookData.category == 0) return {err : 1 , message : "Please Select the book category"}
+    else if(bookData.btype == 0 ) return {err : 1 , message : "Please Book type "}
+    else if (bookData.class == 0) return {err : 1 , message : "Please select the class"}
+    else if(bookData.price < 0) return {err : 1 , message : "invalid Book Price.."}
+    else if(bookImage.length > 5 ) return {err : 1 , message : "Only 5 Images You Can Upload..."}
+
+
+    else
+    {
+        
+    }
+
+
+}}
+
+
 module.exports = {checkNumber,checkExistance,checkValidation}

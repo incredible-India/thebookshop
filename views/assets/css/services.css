@@ -1,0 +1,37 @@
+body {
+    background-color: #191919;
+}
+
+.mainDibba {
+    margin-top:35px;
+    /* border: 1px solid white; */
+    width: 200px;
+    border-radius: 5px;
+}
+
+.s {
+    width: 100%;
+  margin-top: 10px;
+
+}
+
+.v {
+    color: white;
+}
+
+.head {
+    letter-spacing: 2px;
+    color: red;
+}
+
+
+.msg{
+    font-weight: 500px;
+    color: white;
+    margin-top:25px;
+}
+
+hr{
+    color: white;
+    width: 100%;
+}

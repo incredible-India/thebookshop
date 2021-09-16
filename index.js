@@ -9,6 +9,7 @@ const chalk  = require('chalk'); //beautify the console window
 const pug = require('pug'); //for the templates in views
 const path = require('path');//path built in module
 const userRoute = require('./controller/user');
+const bookRoute = require('./controller/book');
 //database connection code...
 require('./db/dbConnection');
 const cookieParser = require('cookie-parser'); //cookies
@@ -25,7 +26,8 @@ const app = express();
 const __port = process.env.PORT || 80;
 
 //using middlewere
-app.use('/newregistration',userRoute)
+app.use('/newregistration',userRoute);//user routes
+app.use('/bookshop',bookRoute);//books route
 app.set('view engine', 'pug');
 app.set('views','./views/pug');//set up the template engine
 app.use(express.static(path.join(__dirname, './'))); //for the static files
@@ -45,10 +47,10 @@ app.get('/',isAuth.authUser,async (req,res)=>{
 
    if(isauth)
    {
-      return res.status(200).render('index',{name : "hello",navTexts : {"Sign in" : "/newregistration","Action" : "#","Hello World" : "#" ,"login" : '/newregistration/login',"logout" : '/newregistration/logout',"My Account" : "/newregistration/myaccount"},username : isauth.fname});
+      return res.status(200).render('index',{name : "hello",navTexts : {"Services" : "/bookshop/services","logout" : '/newregistration/logout',"My Account" : "/newregistration/myaccount"},username : isauth.fname});
    }else
    {
-      return  res.status(200).render('index',{name : "hello",navTexts : {"Sign in" : "/newregistration","Action" : "#","Hello World" : "#" ,"login" : '/newregistration/login',"My Account" : "/newregistration/myaccount"},username : "User"});
+      return  res.status(200).render('index',{name : "hello",navTexts : {"Sign in" : "/newregistration","Action" : "#","Hello World" : "#" ,"login" : '/newregistration/login',},username : "User"});
    }
 
 

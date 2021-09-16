@@ -39,7 +39,7 @@ block content
     .container
         .container.profile.row.justify-content-center
             hr
-            .col-md-6.uname
+            .col-md-4.uname
                 if(userinfo.img)
                     img.img-fluid.userimg(src= './../../../public/src/userimage/' +userinfo.img)
                 else 
@@ -49,7 +49,7 @@ block content
                 h6.u.city #{userinfo.city},   #{userinfo.state}
                 
                 button.btn.btn-outline-danger.u Edit information
-            .col-md-6.uwname
+            .col-md-8.uwname
                 .container
                     h6.email.u.c Email 
                     h6.u.mail  #{userinfo.email}

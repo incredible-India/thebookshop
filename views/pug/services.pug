@@ -1,0 +1,67 @@
+extends ./componants/base.pug 
+
+block title 
+    title Services
+
+block link
+    style
+        include ./../assets/css/services.css
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+
+
+block content 
+    .container 
+        .row 
+            .col-md-4 
+                .mainDibba 
+                    a.s.btn.btn-outline-info(href="/bookshop/bookupload") Sell Your Book
+       
+                    a.s.btn.btn-outline-warning Upload PDF 
+                 
+                    
+                    a.s.btn.btn-outline-light Link Project
+                .mainDibba 
+                    h5.s.v Books :  0
+                    hr
+                    h5.s.v PDF  :  0
+                    hr
+                    h5.s.v Projects : 0 
+
+            .col-md-8 
+                .mainDibbas 
+                    hr
+                    .books 
+                        h4.head YOUR BOOKS
+                        .lists 
+                            if(1)
+                                h6.msg No Books Available 
+
+                    hr
+                    .PDF 
+                        h4.head YOUR PDF
+                        .lists
+                            if(1)
+                                h6.msg No PDF Available 
+                           
+                    hr
+                    .projects 
+                        h4.head YOUR Projects
+                        .lists
+                            if(1)
+                                h6.msg No Projects Available 
+                    hr
+                    .projects 
+                        h4.head YOUR Sold Books
+                        .lists
+                            if(1)
+                                h6.msg No Projects Available
+                    hr
+                    .projects 
+                        h4.head Downloaded PDF
+                        .lists
+                            if(1)
+                                h6.msg No Projects Available 
+                          
+
