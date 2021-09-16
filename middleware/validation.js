@@ -94,6 +94,7 @@ function checkValidation(obj,mobileNumber)
 
 function books_Information_errorCheck(bookData,bookImage){{
 
+
     if(bookData.bname == "" || bookData.bname.length < 3)
     {
         return {err : 1 , message : "Invalid Book Name"}
@@ -103,11 +104,30 @@ function books_Information_errorCheck(bookData,bookImage){{
     else if(bookData.btype == 0 ) return {err : 1 , message : "Please Book type "}
     else if (bookData.class == 0) return {err : 1 , message : "Please select the class"}
     else if(bookData.price < 0) return {err : 1 , message : "invalid Book Price.."}
-    else if(bookImage.length > 5 ) return {err : 1 , message : "Only 5 Images You Can Upload..."}
+    else if(bookImage.bookimg.length > 5 ) return {err : 1 , message : "Only 5 Images You Can Upload..."}
 
 
     else
     {
+        for(i in bookData)
+        {
+           
+            
+      
+                if(bookData[i] == "")
+                {
+                 
+                    bookData[i] = null
+                }
+            
+           
+        }
+
+        bookData.err = 0;
+       
+           
+            
+        return bookData;
         
     }
 
@@ -115,4 +135,4 @@ function books_Information_errorCheck(bookData,bookImage){{
 }}
 
 
-module.exports = {checkNumber,checkExistance,checkValidation}
+module.exports = {checkNumber,checkExistance,checkValidation,books_Information_errorCheck}

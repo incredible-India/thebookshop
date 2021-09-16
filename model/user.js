@@ -99,7 +99,7 @@ Newuser.methods.genrateTOKEN= function()
  
  
     this.save()
-    .then(err=>{
+    .catch(err=>{
         console.log(err,"check the error in modal userJS");
     })
 

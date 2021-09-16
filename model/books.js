@@ -6,12 +6,12 @@ const schema =  mongoose.Schema;
 var books  = new schema ({
 
     userid :{
-        type :ObjectID,
+        type :String,
         required : true,
     },
     title:{ type : String, required : true}
     ,
-    aurther :{ type : String,}
+    aurthor :{ type : String,}
     ,
     language :{ type : String, required : true}
     ,
@@ -19,7 +19,7 @@ var books  = new schema ({
     ,
     year :{ type : String, required : true}
     ,
-    catagory :{ type : String, required : true}
+    category :{ type : String, required : true}
     ,
     description :{ type : String}
 

@@ -79,7 +79,7 @@ block content
                     //-     | Please provide a valid state.
                 .col-md 
                     label(for='validationCustom05' title="Date of Birth") Book Image (max five)
-                    input#validationCustom05.form-control.bookimg(type='file' placeholder='Image' name="userimg" accept="image/*" multiple)
+                    input#validationCustom05.form-control.bookimg(type='file' placeholder='Image' name="bookimg" accept="image/*" multiple)
                     .invalid-feedback
                         | Please provide a valid images.
                    
@@ -104,6 +104,10 @@ block content
                             | You must agree before submitting.
                     .col-12
                         button.btn.btn-outline-danger.p(type='submit') Submit form
+
+    .container 
+        if(err)
+            p.l #{msg}
             
 block script 
     script 
