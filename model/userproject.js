@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 const schema = mongoose.Schema;
 
-var userbook = new schema ({
+var userprojects = new schema ({
 
-    booknumber : {
+   projectnumber : {
         type : Number,
         required : true,
         default : 0
@@ -18,22 +18,19 @@ var userbook = new schema ({
         required : true,
     }, 
 
-    books :[
+    project :[
         {
-        bookid :{
+        projectid :{
         type : String,
         required : true,
     
     },bookDate :{
         type : Date,
         default :Date.now() 
-    },  
-      bookstatus :{ type : Boolean, required : true}
+    }
 }]
     
     
 })
 
-
-
-module.exports = mongoose.model('userbook',userbook);
+module.exports = mongoose.model('userprojects',userprojects)

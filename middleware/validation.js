@@ -135,4 +135,40 @@ function books_Information_errorCheck(bookData,bookImage){{
 }}
 
 
-module.exports = {checkNumber,checkExistance,checkValidation,books_Information_errorCheck}
+//for the Projects
+
+function checkProjectInformation(projectData)
+{
+    if(projectData.bname == "" || projectData.length < 3) return {err : 1, message : "Project name is invalid "}
+    else if(projectData.link == "" || projectData.link.length < 10) return {err :1, message : "Link is invalid "}
+    else if(projectData.element == "") return {err :1, message : "Please enter the element used in this projects"}
+    else
+    {
+      
+        
+            for(i in projectData)
+            {
+               
+                
+          
+                    if(projectData[i] == "")
+                    {
+                     
+                        projectData[i] = null
+                    }
+                
+               
+            }
+    
+            projectData.err = 0;
+           
+               
+                
+            return projectData;
+            
+        
+    }
+
+}
+
+module.exports = {checkNumber,checkExistance,checkValidation,books_Information_errorCheck,checkProjectInformation}

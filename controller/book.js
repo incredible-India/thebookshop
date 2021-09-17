@@ -13,6 +13,9 @@ const cookieParser = require('cookie-parser'); //cookies
 const validateData = require('./../middleware/validation');
 const userbook = require('./../model/userbook');
 const books = require('./../model/books');
+const userproject = require('./../model/userproject');
+const project = require('./../model/projects');
+
 
 router.use(express.static(path.join(__dirname + './../')))
 
@@ -96,7 +99,7 @@ router.post('/verifydata',isAuth.authUser,[
 
     }else
     {
-        console.log(req.files.bookimg.length);
+  
         //for the images of the book will be
         if(req.files)
         {
@@ -161,30 +164,49 @@ router.post('/verifydata',isAuth.authUser,[
                 console.log(err);
             }else
             {
-                let nbooks;
+                // let nbooks;
                 let number_of_books = await userbook.findOne({userid : isAuthentication._id});
             
+                // if(number_of_books)
+                // {
+                //     nbooks = ++number_of_books.booknumber
+                // }else
+                // {
+                //     nbooks = 0
+                // }
+
+                
                 if(number_of_books)
                 {
-                    nbooks = ++number_of_books.booknumber
+                    let bookslist = number_of_books.books.concat({bookid : data._id,bookstatus :false})
+
+                    userbook.findOneAndUpdate({userid : isAuthentication._id},{books : bookslist,booknumber : ++number_of_books.booknumber},(err,data)=>{
+                        if(err)
+                        {
+                            console.log(err,"saving in existing books database in userbook");
+                        }
+                    })
+                   
+                
+
                 }else
                 {
-                    nbooks = 0
-                }
-                let userbooks = new userbook({
+                    new userbook({
             
-                    booknumber : nbooks,
-                    userid : isAuthentication._id,
-                    books : [
-                        {bookid : data._id
-                        ,bookstatus : false}
-                    ] 
-            
+                        booknumber : 1,
+                        userid : isAuthentication._id,
+                        books : [
+                            {bookid : data._id
+                            ,bookstatus : false}
+                        ] 
+                
+                    })
+                .save()
+                .catch(error=>{
+                   console.log(error);
                 })
-            .save()
-            .catch(error=>{
-               console.log(error);
-            })
+                }
+           
             }
         })
       
@@ -192,14 +214,148 @@ router.post('/verifydata',isAuth.authUser,[
     //  for the book number we need to find booknumber from its database 
     //extracting book id from the previous database allbooks 
   
-
+ 
   
 
-        return res.send(filename)
+        return res.send(filename);;//authentication ka dekhna hai isme
 
     }
 
 
 })
 
+
+//for the uploading the project we will provide only links 
+
+router.get('/upload/project',isAuth.authUser, async (req, res)=>{
+    let mynavBar =   {'Home' : '/'}
+
+    let isAuthentication = await req.isauth;
+
+    res.setHeader('Content-Type', 'text/html');
+
+    if(isAuthentication)
+    {
+       return res.status(200).render('project',{navTexts : mynavBar, username : isAuthentication.fname})
+
+    }else
+    {
+        return res.redirect('/newregistration/login')
+    }
+
+
+})
+
+
+//after projects we will verify the data and save in the database
+router.post('/projects/verifydata',isAuth.authUser,[
+    check('pname').not().isEmpty(),
+    check('link').not().isEmpty(),
+    check('element').not().isEmpty()
+
+],async (req, res)=>{
+
+
+    let isAuthentication = await req.isauth;
+
+    res.setHeader('Content-Type', 'text/html');
+
+    let projectError =  validationResult(req);
+
+    if(!projectError.isEmpty())
+    {
+        return res.status(401).send("Server issues...Error Code BSDB 008")
+        
+    }
+
+    if(isAuthentication)
+    {
+
+        
+        let mydata = validateData.checkProjectInformation(req.body);
+
+        if(req.files)
+        {
+             filename = `${req.files.projectimg.md5}_${req.files.projectimg.name}`;
+
+
+            req.files.projectimg.mv(path.join(__dirname,"./../public/src/projectimage/") + filename,(err)=>{
+                if(err)
+                {
+                    return res.status(403).send(`<h1> ERROR BSDB 006/008  ${err} </h1>`);
+                }
+            })
+
+        }else
+        {
+            filename = null;
+        }
+  
+
+        // now save this in the project schema  
+
+        new project({
+
+            userid : isAuthentication._id,
+            title : mydata.pname,
+            elements : mydata.element,
+            link : mydata.link,
+            description : mydata.pdis,
+            img : filename
+            
+        }).save(
+           async (err,data)=>{
+                if(err){
+                    console.log("error in saving the project",err);
+                    return;
+                }else
+                {
+                    let existRepo = await userproject.findOne({userid : isAuthentication._id})
+
+                    if(existRepo)
+                    {
+                        projectlist = existRepo.project.concat({projectid : data._id})
+                        userproject.findOneAndUpdate({userid : isAuthentication._id},{
+                            projectnumber : ++existRepo.projectnumber,
+                            project : projectlist
+                            
+                        },(err,data)=>{
+                            if(err){
+                                console.log("error in upadating",err);
+                            }
+                        })
+
+                    }else
+                    {
+                        new userproject({
+                            userid : data.userid,
+                            projectnumber : 1, 
+                            project : [
+                               { projectid : data._id,
+
+                               }]
+
+
+
+
+                        }).save((err,data)=>{
+                            if(err){{
+                                console.log(err,"saving in the userproject schema");
+                            }}
+                        })
+                    }
+                }
+            }
+        )
+
+            return res.status(200).send(req.body);//now send some information like page service page
+
+    }else
+    {
+        return res.redirect('/newregistration/login')
+
+    }
+
+
+})
 module.exports = router;
