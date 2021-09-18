@@ -171,4 +171,37 @@ function checkProjectInformation(projectData)
 
 }
 
-module.exports = {checkNumber,checkExistance,checkValidation,books_Information_errorCheck,checkProjectInformation}
+
+function pdfValidator(dataPDF)
+{
+    if(dataPDF.pname == "" || dataPDF.pname.length <3)
+    {
+        return {err : 1, message :"Invalid PDF name"}
+    }else if(dataPDF.language == 0)
+    {
+        return {err : 1, message : "Please select the pdf language"}
+    }else
+    {
+        for(i in dataPDF)
+        {
+           
+            
+      
+                if(dataPDF[i] == "")
+                {
+                 
+                    dataPDF[i] = null
+                }
+            
+           
+        }
+
+        dataPDF.err = 0;
+       
+           
+            
+        return dataPDF;
+        
+    }
+}
+module.exports = {checkNumber,checkExistance,checkValidation,books_Information_errorCheck,checkProjectInformation,pdfValidator}

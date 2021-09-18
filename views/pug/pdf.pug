@@ -13,46 +13,46 @@ block content
     .container 
         if(err) 
             p.l.x #{msg}
-        form.needs-validation.row.x(novalidate='' action="/bookshop/projects/verifydata" method="POST" enctype="multipart/form-data")
+        form.needs-validation.row.x(novalidate='' action="/bookshop/pdf/verifydata" method="POST" enctype="multipart/form-data")
             .col-md-4 
                 
-                label.ght(for='validationCustom01') Project Title
+                label.ght(for='validationCustom01') PDF Title
                 span.l *
                 input#validationCustom01.form-control.pname(type='text' placeholder='Book Title'  required='' name="pname" )
                 .valid-feedback
                     | Looks good!
                 .invalid-feedback
-                        | Please Enter the Project Name.
+                        | Please Enter the PDF Name.
         
                 
 
                 .col-md
-                    label.ght(for='validationCustom004') Project Link
-                    span.l *
-                    input#validationCustom004.form-control.link(type='text' placeholder='ex : github,gitlab or etc..' name="link" )
+                    label.ght(for='validationCustom004') Aurthor Name
+                
+                    input#validationCustom004.form-control.link(type='text' placeholder='ex : H.C Verma' name="aname" )
                     .invalid-feedback
-                        | Please provide a valid Link.
+                        | Please provide a Aurthor.
             
                 .col-md 
-                    label.ght(for='validationCustom05' title="project image") Project ScreenShot
-                    input#validationCustom05.form-control.projectimg(type='file' placeholder='Image' name="projectimg" accept="image/*")
+                    label.ght(for='validationCustom05' title="project image") Upload PDF
+                    span.l * 
+                    input#validationCustom05.form-control.pimg(type='file' placeholder='Image' name="pdfimg" accept=".pdf")
                     .invalid-feedback
-                        | Please provide a valid images.
+                        | Please provide a valid PDF.
                    
 
             .row.x 
                 .col-md-8 
-                    label(for='validationCustom03') Elements Used
+                    label(for='validationCustomc04') Book Language 
                     span.l *
-             
-                    textarea#validationCustom03.form-control.element(type='text' placeholder='html,css,js...etc'  name="element"  rows="3")
+                    select#validationCustomc04.form-select.language(placeholder='language' required='' name="language")
                     .invalid-feedback
-                        | Please provide a valid data.
+                        | Please provide a valid Language.
                 
 
             .row.x 
                 .col-md-8 
-                    label(for='validationCustom03') Project Details
+                    label(for='validationCustom03') PDF Details
              
                     textarea#validationCustom03.form-control.pdis(placeholder='Other details if any'  name="pdis"  rows="3")
                
@@ -71,8 +71,11 @@ block content
                     .col-12
                         button.btn.btn-outline-danger.p(type='submit') Submit form
 
-
+    .container 
+        if(err)
+            p.l #{msg}
+            
 block script 
     script 
-        include ./../assets/js/project.js
+        include ./../assets/js/pdf.js
   

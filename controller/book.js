@@ -15,7 +15,8 @@ const userbook = require('./../model/userbook');
 const books = require('./../model/books');
 const userproject = require('./../model/userproject');
 const project = require('./../model/projects');
-
+const userpdf = require('./../model/userpdf');
+const pdf = require('./../model/pdf');
 
 router.use(express.static(path.join(__dirname + './../')))
 
@@ -37,7 +38,100 @@ router.get('/services',isAuth.authUser,async function(req,res){
     if(isAuthentication)
     {
 
-        return res.status(200).render('services',{navTexts : mynavBar,username : isAuthentication.fname});
+        //first we will check the existanse of the collections
+        let booksinformation = await books.find({userid : isAuthentication._id});
+        let pdfinformation = await pdf.find({userid : isAuthentication._id});
+        let projectinformation = await project.find({userid : isAuthentication._id});
+
+        //for the books information
+        if(booksinformation.length)
+        {
+            let localbook = await userbook.findOne({userid : isAuthentication._id});
+
+            if(localbook)
+            {
+                booklist = new Array;
+                numberbook = localbook.booknumber;
+
+             
+                for(i in booksinformation)
+                {
+                    booklist = booklist.concat({bookid : booksinformation[i]._id,title : booksinformation[i].title})
+                }
+              
+
+                mybook = {nodata :false ,numberofbooks : numberbook,lists : booklist}
+            }else
+            {
+                return res.status(404).send("Server issue....Error Code BSDB 010")
+            }
+
+        }else
+        {
+           mybook = {nodata : true, message : "No Books Are Available.."} // pass an object with not available...
+        }
+
+        //now for the pdf ....................
+        if(pdfinformation.length)
+        {
+            let localpdf = await userpdf.findOne({userid : isAuthentication._id});
+
+            if(localpdf)
+            {
+                pdflist = new Array;
+                numberpdf = localpdf.pdfnumber;
+           
+                for(i in pdfinformation)
+                {
+                    pdflist = pdflist.concat({pdfid : pdfinformation[i]._id,title : pdfinformation[i].title})
+                }
+              
+
+                mypdf = {nodata :false , numberofpdf : numberpdf,lists : pdflist}
+            }else
+            {
+                return res.status(404).send("Server issue....Error Code BSDB 011")
+            }
+
+        }else
+        {
+           mypdf = {nodata : true, message : "No PDFs Are Available.."} // pass an object with not available...
+        }
+
+        //project data.............................
+        if(projectinformation.length)
+        {
+            let localproject = await userproject.findOne({userid : isAuthentication._id});
+
+            if(localproject)
+            {
+                projectlist = new Array;
+                numberproject = localproject.projectnumber;
+           
+                for(i in projectinformation)
+                {
+                    projectlist = projectlist.concat({projectid : projectinformation[i]._id,title : projectinformation[i].title})
+                }
+              
+
+                myproject = {nodata :false , numberofproject : numberproject,lists : projectlist}
+            }else
+            {
+                return res.status(404).send("Server issue....Error Code BSDB 012")
+            }
+
+        }else
+        {
+           myproject = {nodata : true, message : "No Projects Are Available.."} // pass an object with not available...
+        }
+
+
+        /////////////////////////////////////////////////////
+        // console.log(mybook);
+        // console.log(mypdf);
+        // console.log(myproject);
+        //now we will pass these informations in services..
+        return res.status(200).render('services',{navTexts : mynavBar,username : isAuthentication.fname,bookinfo : mybook,pdfinfo : mypdf,projectinfo : myproject});
 
 
     }else{
@@ -91,6 +185,11 @@ router.post('/verifydata',isAuth.authUser,[
         return res.send("Please try latar we are facing server issue..Error Code BSDB 007")
     }
 
+    if(isAuthentication)
+    {
+
+    
+
   const checkAgainForm = validateData.books_Information_errorCheck(req.body,req.files);
 
     if(checkAgainForm.err){
@@ -143,7 +242,7 @@ router.post('/verifydata',isAuth.authUser,[
 
         //saving in the all books database
     
-        const newBook = new books({
+         new books({
 
             userid : isAuthentication._id,
             title : checkAgainForm.bname,
@@ -167,13 +266,7 @@ router.post('/verifydata',isAuth.authUser,[
                 // let nbooks;
                 let number_of_books = await userbook.findOne({userid : isAuthentication._id});
             
-                // if(number_of_books)
-                // {
-                //     nbooks = ++number_of_books.booknumber
-                // }else
-                // {
-                //     nbooks = 0
-                // }
+     
 
                 
                 if(number_of_books)
@@ -217,9 +310,12 @@ router.post('/verifydata',isAuth.authUser,[
  
   
 
-        return res.send(filename);;//authentication ka dekhna hai isme
+        return res.send(filename);//authentication ka dekhna hai isme
 
     }
+}else{
+    return res.redirect('/newregistration/login')
+}
 
 
 })
@@ -273,6 +369,11 @@ router.post('/projects/verifydata',isAuth.authUser,[
 
         
         let mydata = validateData.checkProjectInformation(req.body);
+
+        if(mydata.err)
+        {
+            return res.status(403).render('project',{navTexts : {'home':"/"}, username : isAuthentication.fname,err :mydata.err,msg : mydata.message})
+        }
 
         if(req.files)
         {
@@ -349,6 +450,7 @@ router.post('/projects/verifydata',isAuth.authUser,[
         )
 
             return res.status(200).send(req.body);//now send some information like page service page
+          
 
     }else
     {
@@ -358,4 +460,134 @@ router.post('/projects/verifydata',isAuth.authUser,[
 
 
 })
+
+//roting for the uploading the pdf and the files 
+
+router.get('/upload/pdf',isAuth.authUser,async (req,res)=>{
+
+    isAuthentication = await req.isauth; 
+
+    res.setHeader('Content-Type', 'text/html');
+
+    if(isAuthentication)
+    {
+
+        return res.status(200).render('pdf',{username : isAuthentication.fname,navTexts : {"Home" : "/"},err:0})
+
+    }else
+    {
+        return res.status(403).redirect('/newregistration/login');
+    }
+
+
+
+
+}
+)
+
+router.post('/pdf/verifydata',isAuth.authUser,[
+    check('pname').not().isEmpty(),
+    check('language').not().isEmpty()
+
+],async (req, res)=>{
+     
+    let pdfValidationError = validationResult(req);
+
+    if(!pdfValidationError.isEmpty())
+    {
+        return res.send('server Issue....Error Code BSDB 009')
+    }
+
+    let mydata = validateData.pdfValidator(req.body)
+
+    //fisrst check the authentication token
+
+    let isAuthentication = await req.isauth; 
+
+    if(isAuthentication)
+    {
+        //now check the form error message
+
+        if(mydata.err)
+        {
+            return res.status(200).render('pdf',{username : isAuthentication.fname,navTexts : {"Home" : "/"},err:mydata.err,msg : mydata.message})
+        }
+        //now check for the pdf upload
+        if(req.files)
+        {
+             filename = `${req.files.pdfimg.md5}_${req.files.pdfimg.name}`;
+
+
+            req.files.pdfimg.mv(path.join(__dirname,"./../public/src/allpdfs/") + filename,(err)=>{
+                if(err)
+                {
+                    return res.status(403).send(`<h1> ERROR BSDB 006/009  ${err} </h1>`);
+                }
+            })
+
+        }else
+        {
+            
+          return  res.status(403).render('pdf',{username : isAuthentication.fname,navTexts : {"Home" : "/"},err : 1,msg : "Please Upload the pdf"})
+        }
+
+
+        new pdf({
+            userid : isAuthentication._id,
+            title : mydata.pname,
+            auth : mydata.aname,
+            language : mydata.language,
+
+            description : mydata.pdis,
+            img : filename
+        }).save(async (err,data)=>{
+            if(err)
+            {
+                console.log(err,"saving pdf schema");
+                return ;
+            }
+
+            let exisipdf = await userpdf.findOne({userid : isAuthentication._id})        
+
+            if(exisipdf)
+            {
+                pdflist = exisipdf.pdf.concat({pdfid : data._id})
+
+                userpdf.findOneAndUpdate({userid : isAuthentication._id},{pdfnumber : ++exisipdf.pdfnumber,pdf : pdflist},(err,data)=>{
+                    if(err)
+                    {
+                        console.log("error in userpdf updatinf ",err);
+                        return;
+                    }
+                })
+
+            }else
+            {
+                new userpdf({
+                    pdfnumber : 1, 
+                    userid : data.userid,
+                    pdf : [
+                        { pdfid : data._id}
+                    ]
+                }).save((err,data)=>{
+                    if(err)
+                    {
+                        console.log(err,'saving in the user pdf schema');
+                        return;
+                    }
+                })
+            }
+        })
+
+        return res.send(filename)
+
+    }else
+    {
+        return res.status(403).redirect('/newregistration/login');
+    }
+})
+
+
+
+
 module.exports = router;
