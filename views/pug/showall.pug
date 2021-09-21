@@ -45,7 +45,7 @@ block content
             if (type == 4)
                 each val ,index in bookinfo
                     .col-md-6 
-                        a.title #{index+1} .  #{val.title}
+                        a.title(href='/bookshop/bookpreview/'+ val.bookid +'/edition') #{index+1} .  #{val.title}
                     
                     .col-md-3
                         a.date.btn.btn-outline-danger Delete

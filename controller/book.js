@@ -232,6 +232,7 @@ router.post('/verifydata',isAuth.authUser,[
              req.files.bookimg[i].mv(path.join(__dirname,"./../public/src/bookimage/") + filename,(err)=>{
                  if(err)
                  {
+                     console.log(err)
                      return res.status(403).send(`<h1> ERROR BSDB 006  ${err} </h1>`);
                  }
              })
@@ -256,6 +257,8 @@ router.post('/verifydata',isAuth.authUser,[
             category : checkAgainForm.category,
             description :checkAgainForm.dis
             ,price : checkAgainForm.price,
+            class : checkAgainForm.class,
+            bookfor : checkAgainForm.bookfor,
             img : filename
 
 
@@ -616,8 +619,12 @@ router.get('/mybooks/:typeofcon/:number',isAuth.authUser,async (req, res)=>{
 
             if(mybooks.length)
             {
-               
-                return res.status(200).render('showall',{navTexts : mynavbar, username : auth.fname,type : contenttype,numbers : itsnumber,bookinfo : mybooks})
+               let mybook = new Array;
+               for(i in mybooks)
+               {
+                   mybook = mybook.concat({bookid : base64encode(mybooks[i].id),title : mybooks[i].title})
+               }
+                return res.status(200).render('showall',{navTexts : mynavbar, username : auth.fname,type : contenttype,numbers : itsnumber,bookinfo : mybook})
                 
             }else
             {
@@ -678,6 +685,43 @@ router.get('/mybooks/:typeofcon/:number',isAuth.authUser,async (req, res)=>{
 
 
 })
+
+
+//for the preview page of books ...
+router.get('/bookpreview/:bid/edition',isAuth.authUser, async (req, res)=>{
+
+    let auth = await req.isauth;
+
+    mynavbar = {"Home" : '/'}
+    if(auth)
+    {
+        res.setHeader('Content-Type', 'text/html');
+
+        let bookid = base64decode(req.params.bid);
+
+        let verifydata = await validateData.booksrequirement(bookid,auth._id)
+
+        if(verifydata == 1)
+        {
+            return res.status(502).send('<h1> Deleted All Files CODE : BSDB 0013</h1>')
+        }else if(verifydata == 2)
+        {
+            return res.status(502).send('<h1> Deleted All Files CODE : BSDB 0014</h1>')
+        }else
+        {
+
+            return res.status(200).render('bookpreview',{navTexts : mynavbar, username : auth.fname,bookinfo : verifydata})
+
+
+        }
+
+    }else
+    {
+        return res.status(403).redirect('/newregistration/login');
+    }
+
+})
+
 
 
 module.exports = router;

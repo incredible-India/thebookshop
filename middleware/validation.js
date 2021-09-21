@@ -1,6 +1,8 @@
 // mobile number validation 
 
 const USERDBS = require('./../model/user');
+const books = require('./../model/books');
+const userbook = require('./../model/userbook')
 
 function checkNumber(numberMobile)
 {
@@ -204,4 +206,42 @@ function pdfValidator(dataPDF)
         
     }
 }
-module.exports = {checkNumber,checkExistance,checkValidation,books_Information_errorCheck,checkProjectInformation,pdfValidator}
+
+//validation for the book pdf pdfpreview
+
+async function booksrequirement(bookdata,userdata){
+
+    let author = await books.findOne({_id : bookdata ,userid : userdata})
+
+    if(author)
+    {
+        let userbookinfo = await userbook.findOne({userid : userdata});
+
+        if(userbookinfo)
+        {
+            for(i in userbookinfo.books){
+
+                if(userbookinfo.books[i].bookid == author._id)
+                {
+                    bookdateandstatus = userbookinfo.books[i]
+                    break;
+                }
+            }
+
+            return {abook : author,ubook : bookdateandstatus}
+
+        }else
+        {
+            return 2;
+        }
+
+
+    }else
+    {
+        return 1;
+    }
+
+
+
+}
+module.exports = {checkNumber,checkExistance,checkValidation,books_Information_errorCheck,checkProjectInformation,pdfValidator,booksrequirement}

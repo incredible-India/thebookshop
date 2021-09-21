@@ -43,7 +43,7 @@ for(i in category)
 }
 
 
-let classNameis = ["kids",'1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th','11th','12th','Above']
+let classNameis = ["kids",'1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th','11th','12th','12th Above']
 
 document.getElementsByClassName('class')[0].innerHTML = "";
 document.getElementsByClassName('class')[0].innerHTML = `<option disabled selected value=0>Select Class </option>`;

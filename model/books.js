@@ -26,6 +26,8 @@ var books  = new schema ({
     ,price :{ type : Number, required : true}
 
     ,img :[{ type : String,}]
+    ,class :{ type : String, required : true}
+    ,bookfor :{ type : String}
 
 })
 

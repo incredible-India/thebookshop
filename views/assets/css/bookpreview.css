@@ -1,0 +1,31 @@
+body{
+     background:#191919;
+}
+
+.a{
+     color: white;
+     letter-spacing:1px;
+     margin-top: 10px;
+     text-transform: capitalize;
+}
+
+.price {
+
+     color: red;
+     font-weight: 450;
+     letter-spacing:2px;
+}
+
+.s{
+     margin-top: 5px;
+     margin-bottom: 5px;
+}
+
+.alldata{
+     margin-top: 25px;
+}
+
+.mainImg{
+     height:400px;
+     width:100%
+}

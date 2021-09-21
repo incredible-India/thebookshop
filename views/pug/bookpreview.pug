@@ -1,0 +1,112 @@
+extends ./componants/base.pug 
+
+block title 
+    title Services
+
+block link
+    style
+        include ./../assets/css/bookpreview.css
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+
+block content 
+    
+    .container.alldata 
+        .row 
+            .col-md-6 
+                #carouselExampleControls.carousel.slide(data-bs-ride='carousel')
+                    .carousel-inner
+                        if (bookinfo.abook.img.length == 1)
+                            .carousel-item.active
+                                img.img-fluid.mainImg(src="./../../../public/src/bookimage/"+bookinfo.abook.img[0] , alt="" height="400px" width="100%")
+                        else 
+                            .carousel-item.active
+                                img.img-fluid.mainImg(src="./../../../public/src/bookimage/"+bookinfo.abook.img[0] , alt="" height="400px" width="100%")
+
+                            each val,index in bookinfo.abook.img 
+                                
+                                if (index >= 1)
+                                    .carousel-item
+                                        img.img-fluid.mainImg(src="./../../../public/src/bookimage/" + bookinfo.abook.img[1] , alt="" height="400px" width="100%")
+
+
+                           
+           
+                            
+    
+           
+
+                
+                  
+                        button.carousel-control-prev(type='button' data-bs-target='#carouselExampleControls' data-bs-slide='prev')
+                            span.carousel-control-prev-icon(aria-hidden='true')
+                            span.visually-hidden Previous
+                        button.carousel-control-next(type='button' data-bs-target='#carouselExampleControls' data-bs-slide='next')
+                            span.carousel-control-next-icon(aria-hidden='true')
+                            span.visually-hidden Next
+
+            
+            .col-md-6 
+              .addinfo 
+                h3.title.a #{bookinfo.abook.title}
+                if (bookinfo.abook.price == 0)
+                    h4.price Free
+                else 
+                    h4.price ₹ #{bookinfo.abook.price} 
+                
+                if (bookinfo.abook.aurthor)
+
+                    h4.a.auth Author : NOT AVAILABLE
+                else 
+                    h4.a.auth Author : #{bookinfo.abook.aurthor}
+                
+                h4.a.lang Language : #{bookinfo.abook.language}
+
+                if (bookinfo.abook.booktype == 'o')
+                    h4.a.text-info Old Book
+
+                else 
+                    h4.a.text-info New Book
+                
+                h4.a.pub Publish Year :  #{bookinfo.abook.year}
+
+                h4.a.cat Category :  #{bookinfo.abook.category}
+
+                h4.a.class class : #{bookinfo.abook.class}
+
+                if (bookinfo.abook.bookfor)
+                    h4.a.bookfor Book For : #{bookinfo.abook.bookfor}
+                else 
+                    h4.a.bookfor Book For : Not Available
+                
+                if(bookinfo.ubook.bookstatus)
+
+                    h4.a.text-success Sold
+                
+                else 
+                    h4.a.text-danger Not Sold Yet
+
+    hr
+    .container.des 
+        h4.a Date : 
+        h5.a.text-info #{bookinfo.ubook.bookDate}
+    .container.des 
+        h4.a  Description Of Book
+        if (bookinfo.abook.description)
+            h5.a.des #{bookinfo.abook.description}
+        else 
+            h5.a.des Not Available
+
+
+    hr   
+    .container.btns 
+        .row 
+            .col-md-4 
+                a.btn.btn-primary.s Edit 
+            .col-md-4 
+                a.btn.btn-danger.s Delete
+            
+
+
+
