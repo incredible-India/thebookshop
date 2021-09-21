@@ -3,6 +3,10 @@
 const USERDBS = require('./../model/user');
 const books = require('./../model/books');
 const userbook = require('./../model/userbook')
+const pdfs = require('./../model/pdf');
+const userpdf = require('./../model/userpdf');
+const projects = require('./../model/projects')
+const userproject = require('./../model/userproject')
 
 function checkNumber(numberMobile)
 {
@@ -243,5 +247,75 @@ async function booksrequirement(bookdata,userdata){
 
 
 
+
 }
-module.exports = {checkNumber,checkExistance,checkValidation,books_Information_errorCheck,checkProjectInformation,pdfValidator,booksrequirement}
+
+async function pdfrequirement(pdfdata,userdata){
+
+    let author = await pdfs.findOne({_id : pdfdata ,userid : userdata})
+
+    if(author)
+    {
+        let userpdfinfo = await userpdf.findOne({userid : userdata});
+
+        if(userpdfinfo)
+        {
+            for(i in userpdfinfo.pdf){
+
+                if(userpdfinfo.pdf[i].pdfid == author._id)
+                {
+                    pdfdateandstatus = userpdfinfo.pdf[i]
+                    break;
+                }
+            }
+
+            return {apdf : author,updf : pdfdateandstatus}
+
+        }else
+        {
+            return 2;
+        }
+
+
+    }else
+    {
+        return 1;
+    }
+
+
+}
+
+async function projectrequirement(projectdata,userdata){
+
+    let author = await projects.findOne({_id : projectdata ,userid : userdata})
+
+    if(author)
+    {
+        let userprojectinfo = await userproject.findOne({userid : userdata});
+
+        if(userprojectinfo)
+        {
+            for(i in userprojectinfo.project){
+
+                if(userprojectinfo.project[i].projectid == author._id)
+                {
+                    projectdateandstatus = userprojectinfo.project[i]
+                    break;
+                }
+            }
+
+            return {aproject : author,uproject : projectdateandstatus}
+
+        }else
+        {
+            return 2;
+        }
+
+
+    }else
+    {
+        return 1;
+    }
+}
+module.exports = {checkNumber,checkExistance,checkValidation,books_Information_errorCheck,checkProjectInformation,pdfValidator,booksrequirement,
+pdfrequirement,projectrequirement}

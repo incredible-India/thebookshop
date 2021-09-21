@@ -9,8 +9,7 @@ var userpdf = new schema ({
         required : true,
         default : 0
     }
-,
-download :{ type : Number, required : true, default : 0}
+
     ,
  
     userid :{
@@ -27,7 +26,8 @@ download :{ type : Number, required : true, default : 0}
     },pdfDate :{
         type : Date,
         default :Date.now() 
-    }
+    },
+    download :{ type : Number, required : true, default : 0}
 }]
     
     

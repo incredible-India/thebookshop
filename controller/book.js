@@ -607,7 +607,7 @@ router.get('/mybooks/:typeofcon/:number',isAuth.authUser,async (req, res)=>{
         mynavbar = {'Home' : '/'}
         //now finding the books in the databse 
         let mybooks = await books.find({userid : auth._id});
-        let mypdf = await pdf.find({userid : auth._id});
+        let mypdfs = await pdf.find({userid : auth._id});
         let projects = await project.find({userid : auth._id});
 
         let contenttype = req.params.typeofcon;
@@ -641,9 +641,16 @@ router.get('/mybooks/:typeofcon/:number',isAuth.authUser,async (req, res)=>{
         {
 
             //for the pdf
-            if(mypdf.length)
+            if(mypdfs.length)
             {
-               
+               let mypdf = new Array;
+
+               for(i in mypdfs)
+               {
+                   mypdf = mypdf.concat({pdfid : base64encode(mypdfs[i].id),title : mypdfs[i].title})
+
+               }
+
                 return res.status(200).render('showall',{navTexts : mynavbar, username : auth.fname,type : contenttype,numbers : itsnumber,pdfinfo : mypdf})
                 
             }else
@@ -661,8 +668,14 @@ router.get('/mybooks/:typeofcon/:number',isAuth.authUser,async (req, res)=>{
             //for the projects...
             if(projects.length)
             {
+                let myproject = new Array;
+
+                for(i in projects)
+                {
+                    myproject = myproject.concat({projectid : base64encode(projects[i].id),title : projects[i].title})
+                }
                
-                return res.status(200).render('showall',{navTexts : mynavbar, username : auth.fname,type : contenttype,numbers : itsnumber,projectinfo : projects})
+                return res.status(200).render('showall',{navTexts : mynavbar, username : auth.fname,type : contenttype,numbers : itsnumber,projectinfo : myproject})
                 
             }else
             {
@@ -722,6 +735,84 @@ router.get('/bookpreview/:bid/edition',isAuth.authUser, async (req, res)=>{
 
 })
 
+//for the preview of the pdf files 
+
+router.get('/pdfpreview/:pid/edition',isAuth.authUser,async (req, res)=>{
 
 
+    let authorised = await req.isauth;
+
+    mynavbar = {"Home" : '/'}
+
+    if(authorised)
+    {
+        res.setHeader('Content-Type', 'text/html');
+
+        let pdfid = base64decode(req.params.pid);
+
+        let verifydata = await validateData.pdfrequirement(pdfid,authorised._id)
+
+        if(verifydata == 1)
+        {
+            return res.status(502).send('<h1> Deleted All Files CODE : BSDB 0015</h1>')
+
+        }else if(verifydata == 2)
+        {
+            return res.status(502).send('<h1> Deleted All Files CODE : BSDB 0016</h1>')
+        }else
+        {
+
+            return res.status(200).render('pdfpreview',{navTexts : mynavbar, username : authorised.fname,pdfinfo : verifydata})
+
+
+        }
+
+
+    }else
+    {
+        return res.status(403).redirect('/newregistration/login');
+    }
+
+})
+
+//for the poject preview page
+
+router.get('/projectpreview/:prid/edition',isAuth.authUser, async (req, res)=>{
+
+    let authorised = await req.isauth;
+
+    mynavbar = {"Home" : '/'}
+
+    if(authorised)
+    {
+        res.setHeader('Content-Type', 'text/html');
+
+        let projectID = base64decode(req.params.prid);
+
+        let verifydata = await validateData.projectrequirement(projectID,authorised._id)
+
+       
+
+        if(verifydata == 1)
+        {
+            return res.status(502).send('<h1> Deleted All Files CODE : BSDB 0017</h1>')
+
+        }else if(verifydata == 2)
+        {
+            return res.status(502).send('<h1> Deleted All Files CODE : BSDB 0018</h1>')
+        }else
+        {
+
+            return res.status(200).render('projectpreview',{navTexts : mynavbar, username : authorised.fname,projectinfo : verifydata})
+
+
+        }
+
+
+    }else
+    {
+        return res.status(403).redirect('/newregistration/login');
+    }
+
+})
 module.exports = router;

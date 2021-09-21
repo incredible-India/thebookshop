@@ -1,0 +1,66 @@
+extends ./componants/base.pug 
+
+block title 
+    title Services
+
+block link
+    style
+        include ./../assets/css/bookpreview.css
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+
+ 
+block content 
+    .container.alldata 
+        .row 
+            .col-md-6
+                if (projectinfo.aproject.img)
+                    img.img-fluid.mainImg(src="./../../../public/src/projectimage/"+ projectinfo.aproject.img width="100%" height="350px")
+                else
+                    img.img-fluid.mainImg(src="./../../../public/src/svg/project.svg" width="100%" height="350px") 
+
+            
+            .col-md-6 
+              .addinfo 
+                h3.title.a #{projectinfo.aproject.title}
+
+                h3.ele.a Elements : 
+                    span.text-info #{projectinfo.aproject.elements}
+
+                h3.splink.a Link : 
+                    a.sp(href= projectinfo.aproject.link)  #{projectinfo.aproject.link}
+
+                if (projectinfo.uproject.download)
+                    h3.text-success #{projectinfo.uproject.download} Downloads
+                else 
+                    h3.a No downloads yet
+                
+
+           
+
+                
+
+
+    hr
+    .container.des 
+        h4.a Date : 
+        h5.a.text-info #{projectinfo.uproject.bookDate}
+    .container.des 
+        h4.a  Description Of Project
+        if (projectinfo.aproject.description)
+            h5.a.des #{projectinfo.aproject.description}
+        else 
+            h5.a.des Not Available
+
+
+
+    hr   
+    .container.btns 
+        .row 
+            .col-md-4 
+                a.btn.btn-primary.s Edit 
+            .col-md-4 
+                a.btn.btn-danger.s Delete
+
+

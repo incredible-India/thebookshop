@@ -27,7 +27,7 @@ var userprojects = new schema ({
     },bookDate :{
         type : Date,
         default :Date.now() 
-    }
+    },download :{ type :String, default : 0}
 }]
     
     

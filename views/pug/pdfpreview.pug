@@ -1,0 +1,59 @@
+extends ./componants/base.pug 
+
+block title 
+    title Services
+
+block link
+    style
+        include ./../assets/css/bookpreview.css
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+
+ 
+block content 
+    .container.alldata 
+        .row 
+            .col-md-6
+                iframe.mypdfs(src= './../../../public/src/allpdfs/'+pdfinfo.apdf.img frameBorder="0" scrolling="auto") 
+            
+            .col-md-6 
+              .addinfo 
+                h3.title.a #{pdfinfo.apdf.title}
+
+                if (!pdfinfo.apdf.auth)
+
+                    h4.a.auth Author : NOT AVAILABLE
+                else 
+                    h4.a.auth Author : #{pdfinfo.apdf.auth}
+                
+
+                h4.a.lang Language : 
+                    span.text-info #{pdfinfo.apdf.language}
+
+
+                if(pdfinfo.updf.download)
+
+                    h4.a.text-success #{pdfinfo.updf.download} 
+                        span times downloads
+                
+                else 
+                    h4.a.text-danger Downloads :  0
+
+
+    hr
+    .container.des 
+        h4.a Date : 
+        h5.a.text-info #{pdfinfo.updf.pdfDate}
+    .container.des 
+        h4.a  Description Of Pdf
+        if (pdfinfo.apdf.description)
+            h5.a.des #{pdfinfo.apdf.description}
+        else 
+            h5.a.des Not Available
+
+
+
+    
+
+

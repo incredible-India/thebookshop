@@ -57,7 +57,7 @@ block content
             else if (type == 6)
                 each val ,index in pdfinfo 
                     .col-md-6 
-                        a.title #{index+1} .  #{val.title}
+                        a.title(href='/bookshop/pdfpreview/'+ val.pdfid +'/edition') #{index+1} .  #{val.title}
                     
                     .col-md-3
                         a.date.btn.btn-outline-danger Delete
@@ -66,7 +66,7 @@ block content
             else 
                 each val ,index in projectinfo 
                     .col-md-6 
-                        a.title #{index+1} .  #{val.title}
+                        a.title(href='/bookshop/projectpreview/'+ val.projectid +'/edition') #{index+1} .  #{val.title}
                     
                     .col-md-3
                         a.date.btn.btn-outline-danger Delete
