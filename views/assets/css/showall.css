@@ -1,0 +1,27 @@
+body{
+    background-color: #191919;
+}
+
+.delete{
+    margin-top:20px;
+}
+
+.heads{
+    
+    color: red;
+    font-weight: 500;
+    position: sticky;
+    top: 70px;
+
+}
+
+.title {
+
+    font-weight: 450;
+    
+    color: red;
+}
+
+.date{
+    margin-top:10px
+}

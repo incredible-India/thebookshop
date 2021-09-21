@@ -1,12 +1,15 @@
 body {
     background-color: #191919;
 }
-
+.coord{
+    position: relative;
+}
 .mainDibba {
     margin-top:35px;
     /* border: 1px solid white; */
     width: 200px;
     border-radius: 5px;
+    position: sticky;
 }
 
 .s {
@@ -34,4 +37,25 @@ body {
 hr{
     color: white;
     width: 100%;
+}
+
+.lists {
+    color :white;
+    list-style-type: none;
+}
+
+
+
+a{
+    text-decoration: none;
+}
+
+.lists a {
+    color :white;
+}
+
+#showmo{
+    color: red;
+    
+    margin-top: 10px;
 }

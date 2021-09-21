@@ -1,0 +1,78 @@
+extends ./componants/base.pug 
+
+block title 
+    title Services
+
+block link
+    style
+        include ./../assets/css/showall.css
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+
+ 
+block content 
+    .container.delete
+        if (type == 4)
+            .container 
+                .row  
+                    .col-md-6
+                        h3.heads MY BOOKS (#{numbers})
+                        
+                    .col-md-6
+                        a.btn.btn-outline-info(href="") Delete All Books
+                           
+        else if (type == 6)
+            .container 
+                .row  
+                    .col-md-6
+                        h3.heads MY PDFs (#{numbers})
+                        
+                    .col-md-6
+                        a.btn.btn-outline-warning(href="") Delete All Pdfs
+        else 
+            .container 
+                .row  
+                    .col-md-6
+                        h3.heads MY PROJECTS (#{numbers})
+                        
+                    .col-md-6
+                        a.btn.btn-outline-light(href="") Delete All Projects 
+
+    hr  
+    .container.head
+        .row
+            if (type == 4)
+                each val ,index in bookinfo
+                    .col-md-6 
+                        a.title #{index+1} .  #{val.title}
+                    
+                    .col-md-3
+                        a.date.btn.btn-outline-danger Delete
+                    
+                    hr
+
+                
+            
+            else if (type == 6)
+                each val ,index in pdfinfo 
+                    .col-md-6 
+                        a.title #{index+1} .  #{val.title}
+                    
+                    .col-md-3
+                        a.date.btn.btn-outline-danger Delete
+                    
+                    hr 
+            else 
+                each val ,index in projectinfo 
+                    .col-md-6 
+                        a.title #{index+1} .  #{val.title}
+                    
+                    .col-md-3
+                        a.date.btn.btn-outline-danger Delete
+                    
+                    hr 
+
+        
+
+

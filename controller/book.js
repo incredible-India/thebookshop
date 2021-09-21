@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const {check ,validationResult} = require('express-validator')
 const router = express.Router();//routing for urls
@@ -17,6 +18,7 @@ const userproject = require('./../model/userproject');
 const project = require('./../model/projects');
 const userpdf = require('./../model/userpdf');
 const pdf = require('./../model/pdf');
+const {base64encode, base64decode} = require('nodejs-base64');//for encoding and the decoding the data
 
 router.use(express.static(path.join(__dirname + './../')))
 
@@ -53,10 +55,10 @@ router.get('/services',isAuth.authUser,async function(req,res){
                 booklist = new Array;
                 numberbook = localbook.booknumber;
 
-             
+              
                 for(i in booksinformation)
                 {
-                    booklist = booklist.concat({bookid : booksinformation[i]._id,title : booksinformation[i].title})
+                    booklist = booklist.concat({bookid : base64encode(booksinformation[i].id),title : booksinformation[i].title})
                 }
               
 
@@ -68,7 +70,7 @@ router.get('/services',isAuth.authUser,async function(req,res){
 
         }else
         {
-           mybook = {nodata : true, message : "No Books Are Available.."} // pass an object with not available...
+           mybook = {nodata : true} // pass an object with not available...
         }
 
         //now for the pdf ....................
@@ -83,7 +85,8 @@ router.get('/services',isAuth.authUser,async function(req,res){
            
                 for(i in pdfinformation)
                 {
-                    pdflist = pdflist.concat({pdfid : pdfinformation[i]._id,title : pdfinformation[i].title})
+                  
+                    pdflist = pdflist.concat({pdfid : base64encode(pdfinformation[i].id),title : pdfinformation[i].title})
                 }
               
 
@@ -95,7 +98,7 @@ router.get('/services',isAuth.authUser,async function(req,res){
 
         }else
         {
-           mypdf = {nodata : true, message : "No PDFs Are Available.."} // pass an object with not available...
+           mypdf = {nodata : true} // pass an object with not available...
         }
 
         //project data.............................
@@ -110,7 +113,7 @@ router.get('/services',isAuth.authUser,async function(req,res){
            
                 for(i in projectinformation)
                 {
-                    projectlist = projectlist.concat({projectid : projectinformation[i]._id,title : projectinformation[i].title})
+                    projectlist = projectlist.concat({projectid : base64encode(projectinformation[i].id), title : projectinformation[i].title})
                 }
               
 
@@ -122,7 +125,7 @@ router.get('/services',isAuth.authUser,async function(req,res){
 
         }else
         {
-           myproject = {nodata : true, message : "No Projects Are Available.."} // pass an object with not available...
+           myproject = {nodata : true} // pass an object with not available...
         }
 
 
@@ -310,7 +313,7 @@ router.post('/verifydata',isAuth.authUser,[
  
   
 
-        return res.send(filename);//authentication ka dekhna hai isme
+        return res.redirect('/bookshop/services'); //if everything will be ok then 
 
     }
 }else{
@@ -449,7 +452,8 @@ router.post('/projects/verifydata',isAuth.authUser,[
             }
         )
 
-            return res.status(200).send(req.body);//now send some information like page service page
+          
+        return res.redirect('/bookshop/services');//now send some information like page service page
           
 
     }else
@@ -579,7 +583,8 @@ router.post('/pdf/verifydata',isAuth.authUser,[
             }
         })
 
-        return res.send(filename)
+     
+        return res.redirect('/bookshop/services');
 
     }else
     {
@@ -587,7 +592,92 @@ router.post('/pdf/verifydata',isAuth.authUser,[
     }
 })
 
+//time for show the list of books/pdf/projects 
 
+router.get('/mybooks/:typeofcon/:number',isAuth.authUser,async (req, res)=>{
+
+    let auth = await req.isauth;
+
+    if(auth)
+    {
+        res.setHeader('Content-Type', 'text/html');
+        mynavbar = {'Home' : '/'}
+        //now finding the books in the databse 
+        let mybooks = await books.find({userid : auth._id});
+        let mypdf = await pdf.find({userid : auth._id});
+        let projects = await project.find({userid : auth._id});
+
+        let contenttype = req.params.typeofcon;
+        let itsnumber = req.params.number;
+
+        if(contenttype == 4)
+        {
+            //first check databse exist or not
+
+            if(mybooks.length)
+            {
+               
+                return res.status(200).render('showall',{navTexts : mynavbar, username : auth.fname,type : contenttype,numbers : itsnumber,bookinfo : mybooks})
+                
+            }else
+            {
+                return res.send('<h4> All books has been deleted </h4>')
+           
+
+            }
+
+
+
+
+
+        }else if(contenttype == 6)
+        {
+
+            //for the pdf
+            if(mypdf.length)
+            {
+               
+                return res.status(200).render('showall',{navTexts : mynavbar, username : auth.fname,type : contenttype,numbers : itsnumber,pdfinfo : mypdf})
+                
+            }else
+            {
+                return res.send('<h4> All pdf files has been deleted </h4>')
+           
+
+            }
+
+
+
+
+        }else if(contenttype == 8)
+        {
+            //for the projects...
+            if(projects.length)
+            {
+               
+                return res.status(200).render('showall',{navTexts : mynavbar, username : auth.fname,type : contenttype,numbers : itsnumber,projectinfo : projects})
+                
+            }else
+            {
+                return res.send('<h4> All projects files has been deleted </h4>')
+           
+
+            }
+
+
+        }else
+        {
+            return res.send('<h1> Data Cannot be found </h1>');
+        }
+
+
+    }else
+    {
+        return res.status(403).redirect('/newregistration/login');
+    }
+
+
+})
 
 
 module.exports = router;

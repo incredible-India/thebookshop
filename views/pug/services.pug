@@ -12,7 +12,8 @@ block nav
 
 
 block content 
-    .container 
+   
+    .container.coord 
         .row 
             .col-md-4 
                 .mainDibba 
@@ -22,38 +23,92 @@ block content
                  
                     
                     a.s.btn.btn-outline-light(href="/bookshop//upload/project") Link Project
-                .mainDibba 
-                    h5.s.v Books :  0
+                .mainDibba
+                    if(bookinfo.nodata) 
+                        h5.s.v Books :  0
+                    else 
+                        h5.s.v Books : #{bookinfo.numberofbooks}
                     hr
-                    h5.s.v PDF  :  0
+                    if(pdfinfo.nodata)
+                        h5.s.v PDF  :  0
+                    else 
+                        h5.s.v PDF : #{pdfinfo.numberofpdf}
                     hr
-                    h5.s.v Projects : 0 
+                    if(projectinfo.nodata)
+                        h5.s.v Projects : 0
+                    else 
+                        h5.s.v Projects : #{projectinfo.numberofproject} 
 
             .col-md-8 
                 .mainDibbas 
                     hr
                     .books 
-                        h4.head YOUR BOOKS
+                        h4.head Your Books
                         .lists 
-                            if(1)
+                            if(bookinfo.nodata)
                                 h6.msg No Books Available 
+                            else 
+                                if (bookinfo.numberofbooks > 4)
+                                    each val in [0,1,2,3]
+                                        li.lists 
+                                          a(href='/bookshop/bookpreview/'+ bookinfo.lists[val].bookid +'/edition') #{bookinfo.lists[val].title} 
+
+                                        
+                                    a#showmo(href='/bookshop/mybooks/4/'+ bookinfo.numberofbooks) Show More
+
+                                       
+                                else 
+                                    each index in bookinfo.lists
+                                        li 
+                                          a(href='/bookshop/bookpreview/'+ index.bookid +'/edition') #{index.title}  
+                                          
+
 
                     hr
-                    .PDF 
-                        h4.head YOUR PDF
+                    .PDF
+                        h4.head Your PDFs
                         .lists
-                            if(1)
-                                h6.msg No PDF Available 
+
+                            if (pdfinfo.nodata)
+                                h6.msg No Books Available 
+                            else 
+                                if (pdfinfo.numberofpdf > 4)
+                                    each val in [0,1,2,3]
+                                        li.lists 
+                                          a(href='/bookshop/pdfpreview/'+ pdfinfo.lists[val].pdfid + '/edition') #{pdfinfo.lists[val].title} 
+
+                                        
+                                    a#showmo(href='/bookshop/mybooks/6/'+ pdfinfo.numberofpdf) Show More
+
+                                       
+                                else 
+                                    each index in pdfinfo.lists
+                                        li.lists 
+                                          a(href='/bookshop/pdfpreview/'+ index.pdfid + '/edition') #{index.title} 
                            
                     hr
                     .projects 
-                        h4.head YOUR Projects
+                        h4.head Your Projects
                         .lists
-                            if(1)
-                                h6.msg No Projects Available 
+                            if (projectinfo.nodata)
+                                h6.msg No Books Available 
+                            else 
+                                if (projectinfo.numberofproject > 4)
+                                    each val in [0,1,2,3]
+                                        li.lists 
+                                          a(href='/bookshop/projectpreview/'+ projectinfo.lists[val].projectid +'/edition') #{projectinfo.lists[val].title} 
+
+                                        
+                                    a#showmo(href='/bookshop/mybooks/8/'+projectinfo.numberofproject) Show More
+
+                                       
+                                else 
+                                    each index in projectinfo.lists
+                                        li.lists 
+                                          a(href='/bookshop/projectpreview/'+ index.projectid +'/edition') #{index.title}
                     hr
                     .projects 
-                        h4.head YOUR Sold Books
+                        h4.head Your Sold Books
                         .lists
                             if(1)
                                 h6.msg No Projects Available
