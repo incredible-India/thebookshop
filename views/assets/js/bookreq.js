@@ -24,7 +24,7 @@
         if(document.getElementsByClassName('pname')[0].value.length < 3 )
         {
        
-            alert("Please write the valid pdf name")
+            alert("Please write the valid  name")
             e.preventDefault();
             e.stopPropagation();
            
@@ -40,7 +40,7 @@
         
        if(document.getElementsByClassName('language')[0].value == "")
        {
-        alert("Please enter The Language")
+        alert("Please enter The Language/elements")
         e.preventDefault();
         e.stopPropagation();
        

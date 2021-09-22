@@ -871,7 +871,7 @@ router.post('/bookrequest/verifydata',isAuth.authUser,[
 
     if(!errorRequest.isEmpty())
     {
-        console.log("error in the request form");
+        console.log("error in the request form book");
         return ;
     }
 
@@ -917,7 +917,7 @@ router.post('/bookrequest/verifydata',isAuth.authUser,[
                         description : req.body.pdis
                     }
                 ],
-                projectrequest : null
+             
             }).save()
             .catch(err =>{
                 console.log(err,"the error BSDB 019");
@@ -935,4 +935,105 @@ router.post('/bookrequest/verifydata',isAuth.authUser,[
 
 
 })
+
+//for requesting the project 
+
+router.get('/projectrequest',isAuth.authUser,async(req,res) =>{
+
+    let isuser = await req.isauth;
+
+    if(isuser)
+    {
+        //typeofreq =  true for the book and false for the project
+
+        res.setHeader('Content-Type', 'text/html');
+        return res.status(200).render('bookandprojectreq',{username : isuser.fname,navTexts : {
+            "Home" : '/'
+        },typeofreq : false})
+
+
+    }else
+    {
+        return res.redirect('/newregistration/login');
+    }
+
+})
+
+//after requesting the project verify the data and
+
+router.post('/projectrequest/verifydata',isAuth.authUser,[
+    check('pname').not().isEmpty(),
+    check('language').not().isEmpty(),
+
+],async (req, res)=>{
+
+    let errorRequest =  validationResult(req);
+
+    if(!errorRequest.isEmpty())
+    {
+        console.log("error in the request form project");
+        return ;
+    }
+
+    let isuser = await req.isauth;
+
+    if(isuser)
+    {
+
+        let checkExistance = await myrequest.findOne({userid : isuser._id})
+
+        if(checkExistance)
+        {
+            let myprojectlist = checkExistance.projectrequest;
+
+            myprojectlist = myprojectlist.concat({
+
+                title : req.body.pname,
+            
+                elements : req.body.language,
+             
+                description : req.body.pdis
+            })
+
+            myrequest.findOneAndUpdate({userid : isuser._id}, {
+
+                projectrequest : myprojectlist
+
+            })
+            .catch(err=>{
+                console.log(err,"the error is BSDB 020");
+            })
+
+        }else
+        {
+            new myrequest({
+                userid : isuser._id,
+                projectrequest : [
+                    {
+                        title : req.body.pname,
+                    
+                        elements : req.body.language,
+                     
+                        description : req.body.pdis
+                    }
+                ]
+      
+            }).save()
+            .catch(err =>{
+                console.log(err,"the error BSDB 020");
+            })
+
+           
+        }
+        
+        return res.status(200).redirect('/bookshop/request'); //once data save it will go on request page list
+
+    }else
+    {
+        return res.redirect('/newregistration/login');
+    }
+
+
+})
+
 module.exports = router;
