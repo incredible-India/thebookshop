@@ -19,7 +19,7 @@ const project = require('./../model/projects');
 const userpdf = require('./../model/userpdf');
 const pdf = require('./../model/pdf');
 const {base64encode, base64decode} = require('nodejs-base64');//for encoding and the decoding the data
-
+const myrequest = require('./../model/request');
 router.use(express.static(path.join(__dirname + './../')))
 
 
@@ -813,6 +813,126 @@ router.get('/projectpreview/:prid/edition',isAuth.authUser, async (req, res)=>{
     {
         return res.status(403).redirect('/newregistration/login');
     }
+
+})
+
+
+//for requesting the books and projects
+router.get('/request',isAuth.authUser,async function(req, res){
+
+    let isuser = await req.isauth;
+
+    if(isuser)
+    {
+        res.setHeader('Content-Type', 'text/html');
+        return res.status(200).render('request',{username : isuser.fname,navTexts : {'home' : '/'}})
+
+    }else
+    {
+        return res.redirect('/newregistration/login');
+    }
+
+
+
+})
+
+//for the book request
+
+router.get('/bookrequest',isAuth.authUser,async(req,res) =>{
+
+    let isuser = await req.isauth;
+
+    if(isuser)
+    {
+        //typeofreq =  true for the book and false for the project
+
+        res.setHeader('Content-Type', 'text/html');
+        return res.status(200).render('bookandprojectreq',{username : isuser.fname,navTexts : {
+            "Home" : '/'
+        },typeofreq : true})
+
+
+    }else
+    {
+        return res.redirect('/newregistration/login');
+    }
+
+})
+
+//after requesting the book verify the data and
+
+router.post('/bookrequest/verifydata',isAuth.authUser,[
+    check('pname').not().isEmpty(),
+    check('language').not().isEmpty(),
+
+],async (req, res)=>{
+
+    let errorRequest =  validationResult(req);
+
+    if(!errorRequest.isEmpty())
+    {
+        console.log("error in the request form");
+        return ;
+    }
+
+    let isuser = await req.isauth;
+
+    if(isuser)
+    {
+
+        let checkExistance = await myrequest.findOne({userid : isuser._id})
+
+        if(checkExistance)
+        {
+            let mybooklist = checkExistance.bookrequest;
+
+            mybooklist = mybooklist.concat({
+
+                title : req.body.bname,
+                aurthor : req.body.aname,
+                language : req.body.language,
+                booktype : req.body.btype,
+                description : req.body.pdis
+            })
+
+            myrequest.findOneAndUpdate({userid : isuser._id}, {
+
+                bookrequest : mybooklist
+
+            })
+            .catch(err=>{
+                console.log(err,"the error is BSDB 019");
+            })
+
+        }else
+        {
+            new myrequest({
+                userid : isuser._id,
+                bookrequest : [
+                    {
+                        title : req.body.bname,
+                        aurthor : req.body.aname,
+                        language : req.body.language,
+                        booktype : req.body.btype,
+                        description : req.body.pdis
+                    }
+                ],
+                projectrequest : null
+            }).save()
+            .catch(err =>{
+                console.log(err,"the error BSDB 019");
+            })
+
+           
+        }
+        
+        return res.status(200).redirect('/bookshop/request'); //once data save it will go on request page list
+
+    }else
+    {
+        return res.redirect('/newregistration/login');
+    }
+
 
 })
 module.exports = router;

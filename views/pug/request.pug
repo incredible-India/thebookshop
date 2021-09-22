@@ -1,0 +1,34 @@
+extends ./componants/base.pug 
+
+block title 
+    title Services
+
+block link
+    style
+        include ./../assets/css/services.css
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+
+
+block content
+    .container.m-3.position-sticky.req
+        .row 
+            .col-md-4 
+                a.btn.btn-outline-info(href="/bookshop/bookrequest") Request For Book
+            .col-md-4 
+                a.btn.btn-outline-warning Request For Project
+        
+        hr
+
+    
+    .container.m-3 
+        .row 
+            .col-md-6 
+                h3#showmo Requested Books
+
+                li.k NO Books Available
+                    
+            .col-md-6 
+                h3#showmo Requested Projects
+                li.k No Projects Available

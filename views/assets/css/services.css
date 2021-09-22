@@ -59,3 +59,14 @@ a{
     
     margin-top: 10px;
 }
+
+.req{
+    position: sticky;
+    top: 120px;
+    z-index: 99;
+
+}
+
+.k{
+    color: white;
+}

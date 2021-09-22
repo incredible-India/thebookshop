@@ -47,7 +47,7 @@ app.get('/',isAuth.authUser,async (req,res)=>{
 
    if(isauth)
    {
-      return res.status(200).render('index',{name : "hello",navTexts : {"Services" : "/bookshop/services","logout" : '/newregistration/logout',"My Account" : "/newregistration/myaccount"},username : isauth.fname});
+      return res.status(200).render('index',{name : "hello",navTexts : {"Notifications (5)" : '/mynotifications',"Requests" : "/bookshop/request","Services" : "/bookshop/services","logout" : '/newregistration/logout',"My Account" : "/newregistration/myaccount"},username : isauth.fname});
    }else
    {
       return  res.status(200).render('index',{name : "hello",navTexts : {"Sign in" : "/newregistration","Action" : "#","Hello World" : "#" ,"login" : '/newregistration/login',},username : "User"});
