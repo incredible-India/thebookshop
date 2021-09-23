@@ -12,6 +12,13 @@ block nav
 
 
 block content
+    if(showinfo)
+        .alert.alert-success(role='alert')
+        |   #{infomessage}
+        block script
+            script
+                include ./../assets/js/other.js
+
     .container.m-3.position-sticky.req
         .row 
             .col-md-4 
@@ -26,8 +33,17 @@ block content
         .row 
             .col-md-6 
                 h3#showmo Requested Books
+                if (requests.bookrequest)
+                    each val ,index in requests.bookrequest 
+                        details.k 
+                            summary val.aurthor
 
-                li.k NO Books Available
+
+
+                else
+
+                    li.k NO Books Available
+              
                     
             .col-md-6 
                 h3#showmo Requested Projects

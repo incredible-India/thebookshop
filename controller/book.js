@@ -825,7 +825,23 @@ router.get('/request',isAuth.authUser,async function(req, res){
     if(isuser)
     {
         res.setHeader('Content-Type', 'text/html');
-        return res.status(200).render('request',{username : isuser.fname,navTexts : {'home' : '/'}})
+        //we will send the data also to 
+        let checkExistance =  await myrequest.findOne({userid : isuser._id});
+        
+        if(checkExistance)
+        {
+            requestInformation = checkExistance;
+
+        }else
+
+        {
+            requestInformation = checkExistance;
+        }
+
+
+        return res.status(200).render('request',{username : isuser.fname,navTexts : {'home' : '/'},'requests' : requestInformation,
+    
+    showinfo : false});
 
     }else
     {
@@ -862,7 +878,7 @@ router.get('/bookrequest',isAuth.authUser,async(req,res) =>{
 //after requesting the book verify the data and
 
 router.post('/bookrequest/verifydata',isAuth.authUser,[
-    check('pname').not().isEmpty(),
+    check('bname').not().isEmpty(),
     check('language').not().isEmpty(),
 
 ],async (req, res)=>{

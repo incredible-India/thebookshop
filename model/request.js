@@ -51,4 +51,4 @@ var books  = new schema ({
 
 
 
-module.exports = mongoose.model('requestbook',books);
+module.exports = mongoose.model('request',books);
