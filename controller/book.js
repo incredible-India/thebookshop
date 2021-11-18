@@ -20,6 +20,7 @@ const userpdf = require('./../model/userpdf');
 const pdf = require('./../model/pdf');
 const {base64encode, base64decode} = require('nodejs-base64');//for encoding and the decoding the data
 const myrequest = require('./../model/request');
+const links = require('./../model/allbookslink');
 router.use(express.static(path.join(__dirname + './../')))
 
 
@@ -308,6 +309,27 @@ router.post('/verifydata',isAuth.authUser,[
            
             }
         })
+
+        //creating the link...
+        let bookdetails =  await books.findOne({userid : isAuthentication._id})
+        console.log(bookdetails._id);
+        let bookLink = `/freebooks/${base64encode(bookdetails.id)}`
+
+        new links({
+            userid : isAuthentication._id,
+            links : bookLink,
+            title : checkAgainForm.bname,
+            bookid : bookdetails.id
+        }).save((err,data)=>{
+              
+          if(err)  {
+              console.log(err);
+              return
+          }
+           
+        })
+
+
       
 //now time for the saving the files in the user database 
     //  for the book number we need to find booknumber from its database 
@@ -723,7 +745,11 @@ router.get('/bookpreview/:bid/edition',isAuth.authUser, async (req, res)=>{
         }else
         {
 
-            return res.status(200).render('bookpreview',{navTexts : mynavbar, username : auth.fname,bookinfo : verifydata})
+            //here we will create the booklink and will save in the database..
+            let bookLink = `/freebooks/${base64encode(verifydata.abook.id)}`
+            
+            
+            return res.status(200).render('bookpreview',{navTexts : mynavbar, username : auth.fname,bookinfo : verifydata,link : bookLink})
 
 
         }
@@ -835,9 +861,11 @@ router.get('/request',isAuth.authUser,async function(req, res){
         }else
 
         {
-            requestInformation = checkExistance;
+            requestInformation = null;
         }
 
+        //show info is alert in pug we will keep it false when
+        // request is the information of the request of book and projects    
 
         return res.status(200).render('request',{username : isuser.fname,navTexts : {'home' : '/'},'requests' : requestInformation,
     
@@ -941,8 +969,27 @@ router.post('/bookrequest/verifydata',isAuth.authUser,[
 
            
         }
+        //now we will redirect to that page ......
+     
         
-        return res.status(200).redirect('/bookshop/request'); //once data save it will go on request page list
+    //     if(checkExistance)
+    //     {
+    //         requestInformation = checkExistance;
+
+    //     }else
+
+    //     {
+    //         requestInformation = null;
+    //     }
+
+    //     //show info is alert in pug we will keep it true when
+    //     // request is the information of the request of book and projects    
+
+    //     return res.status(200).render('request',{username : isuser.fname,navTexts : {'home' : '/'},'requests' : requestInformation,
+    
+    // showinfo : true, infomessage : `"${req.body.bname}" book requested successfully..` });
+        
+    return res.status(200).redirect('/bookshop/request'); //once data save it will go on request page list
 
     }else
     {
@@ -1041,7 +1088,10 @@ router.post('/projectrequest/verifydata',isAuth.authUser,[
 
            
         }
-        
+
+
+
+   
         return res.status(200).redirect('/bookshop/request'); //once data save it will go on request page list
 
     }else

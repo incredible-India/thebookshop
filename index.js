@@ -10,6 +10,7 @@ const pug = require('pug'); //for the templates in views
 const path = require('path');//path built in module
 const userRoute = require('./controller/user');
 const bookRoute = require('./controller/book');
+const sellBuyBooks = require('./controller/sellcart');
 //database connection code...
 require('./db/dbConnection');
 const cookieParser = require('cookie-parser'); //cookies
@@ -28,6 +29,7 @@ const __port = process.env.PORT || 80;
 //using middlewere
 app.use('/newregistration',userRoute);//user routes
 app.use('/bookshop',bookRoute);//books route
+app.use('/freebooks',sellBuyBooks);
 app.set('view engine', 'pug');
 app.set('views','./views/pug');//set up the template engine
 app.use(express.static(path.join(__dirname, './'))); //for the static files

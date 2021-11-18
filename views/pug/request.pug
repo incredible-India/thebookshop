@@ -12,12 +12,12 @@ block nav
 
 
 block content
-    if(showinfo)
-        .alert.alert-success(role='alert')
-        |   #{infomessage}
-        block script
-            script
-                include ./../assets/js/other.js
+    //- if(showinfo)
+    //-     .alert.alert-success(role='alert')
+    //-         |   #{infomessage}
+        //- block script
+        //-     script
+        //-         include ./../assets/js/other.js
 
     .container.m-3.position-sticky.req
         .row 
@@ -33,10 +33,25 @@ block content
         .row 
             .col-md-6 
                 h3#showmo Requested Books
-                if (requests.bookrequest)
-                    each val ,index in requests.bookrequest 
-                        details.k 
-                            summary val.aurthor
+                if (requests)
+                    if (requests.bookrequest)
+                        each val ,index in requests.bookrequest 
+                            details.k 
+                                summary #{index +1 } - #{val.title}
+                                p 
+                                p.auth Author : #{val.aurthor}
+                                p.auth Language : #{val.language}
+                                p.auth Book Type :   #{val.booktype}
+                                p.auth Description : #{val.description}
+                                p.auth  Date : #{val.dateofreq}
+                                p.auth Request id : #{val._id}
+                                .container 
+                                    .row 
+                                        .col-md-6 
+                                            a(href="") Delete Request 
+                                        .col-md-6 
+                                            a(href="") Got The Book
+
 
 
 
@@ -47,4 +62,28 @@ block content
                     
             .col-md-6 
                 h3#showmo Requested Projects
-                li.k No Projects Available
+                if (requests)
+                    if (requests.projectrequest)
+                        each val ,index in requests.projectrequest 
+                            details.k 
+                                summary #{index +1 } - #{val.title}
+                                p 
+                             
+                            
+                                p.auth Elements : #{val.elements}
+                                p.auth Description : #{val.description}
+                                p.auth  Date : #{val.dateofreq}
+                                p.auth Request id : #{val._id}
+                                .container 
+                                    .row 
+                                        .col-md-6 
+                                            a(href="") Delete Request 
+                                        .col-md-6 
+                                            a(href="") Got the Project
+
+
+
+                else
+
+                  
+                    li.k No Projects Available

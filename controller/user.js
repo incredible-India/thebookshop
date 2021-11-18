@@ -176,6 +176,7 @@ router.post('/checking/redirecting',[
          gender : mydata.gender,
          state : mydata.state,
          city : mydata.city,
+        
          password :bcryptjs.hashSync(mydata.pass,10),
          mobile : mobileNumber,
          altmobile : mydata.altmobile,
