@@ -22,6 +22,8 @@ const {base64encode, base64decode} = require('nodejs-base64');//for encoding and
 const myrequest = require('./../model/request');
 const links = require('./../model/allbookslink');
 const pdflink = require('./../model/allpdflink');
+const projectLink = require('./../model/projectslink');
+const projectslink = require('./../model/projectslink');
 router.use(express.static(path.join(__dirname + './../')))
 
 
@@ -479,7 +481,25 @@ router.post('/projects/verifydata',isAuth.authUser,[
                             }}
                         })
                     }
+
+                    new projectslink ({
+                        userid : isAuthentication._id,
+                        links : `/freebooks/projects/${base64encode(data.id)}/show`
+                        ,title : data.title ,
+                        projectid : data.id
+                    }).save((err,data)=>{
+
+                        if(err){
+                            console.log('Link for pdf creating error ...',err);
+                            return ;
+                        }
+
+
+                    })
+                      
                 }
+
+
             }
         )
 
@@ -614,7 +634,7 @@ router.post('/pdf/verifydata',isAuth.authUser,[
             }
 
             //creating the pdfg links and saving it into the database
-            let pdfLink = `/freebooks/${base64encode(data.id)}`
+            let pdfLink = `/freebooks/pdfs/${base64encode(data.id)}/show`
 
             new pdflink({
                 userid : isAuthentication._id,
@@ -628,7 +648,7 @@ router.post('/pdf/verifydata',isAuth.authUser,[
                   return
               }
                
-              console.log(data);
+              
             })
 
         })
@@ -773,7 +793,7 @@ router.get('/bookpreview/:bid/edition',isAuth.authUser, async (req, res)=>{
             //here we will get the booklink from the database..
             
             let getBookLink = await links.findOne({bookid : verifydata.abook.id})
-
+            
            let  bookLink = `${getBookLink.links}`
            
             
@@ -817,7 +837,22 @@ router.get('/pdfpreview/:pid/edition',isAuth.authUser,async (req, res)=>{
         }else
         {
 
-            return res.status(200).render('pdfpreview',{navTexts : mynavbar, username : authorised.fname,pdfinfo : verifydata})
+            //geting the pdf link and the extracting from the database...
+
+            let pdfLinksSaved = await pdflink.findOne({pdfid : verifydata.apdf.id})
+            // console.log(pdfLinksSaved);
+
+            let showpdfLink;
+
+            if(!pdfLinksSaved)
+            {
+                showpdfLink = 'Cannot show the link ..'
+            }else
+            {
+                    showpdfLink =pdfLinksSaved.links
+            }
+
+            return res.status(200).render('pdfpreview',{navTexts : mynavbar, username : authorised.fname,pdfinfo : verifydata,link : showpdfLink})
 
 
         }
@@ -857,8 +892,16 @@ router.get('/projectpreview/:prid/edition',isAuth.authUser, async (req, res)=>{
             return res.status(502).send('<h1> Deleted All Files CODE : BSDB 0018</h1>')
         }else
         {
+        
+           
+            let projectLinkFRM_DBS = await projectLink.findOne({projectid : verifydata.aproject.id})
 
-            return res.status(200).render('projectpreview',{navTexts : mynavbar, username : authorised.fname,projectinfo : verifydata})
+            let CretedLink = projectLinkFRM_DBS.links
+
+            
+            
+           
+            return res.status(200).render('projectpreview',{navTexts : mynavbar, username : authorised.fname,projectinfo : verifydata,link : CretedLink})
 
 
         }
