@@ -21,6 +21,7 @@ const pdf = require('./../model/pdf');
 const {base64encode, base64decode} = require('nodejs-base64');//for encoding and the decoding the data
 const myrequest = require('./../model/request');
 const links = require('./../model/allbookslink');
+const pdflink = require('./../model/allpdflink');
 router.use(express.static(path.join(__dirname + './../')))
 
 
@@ -307,19 +308,18 @@ router.post('/verifydata',isAuth.authUser,[
                 })
                 }
            
-            }
-        })
-
-        //creating the link...
-        let bookdetails =  await books.findOne({userid : isAuthentication._id})
-        console.log(bookdetails._id);
-        let bookLink = `/freebooks/${base64encode(bookdetails.id)}`
+                    //creating the link...
+                    /*here we created the links for the project*/
+        // let bookdetails =  await books.findOne({_id : isAuthentication._id})
+        // console.log(bookdetails._id);
+    
+        let bookLink = `/freebooks/${base64encode(data.id)}`
 
         new links({
             userid : isAuthentication._id,
             links : bookLink,
-            title : checkAgainForm.bname,
-            bookid : bookdetails.id
+            title : data.title,
+            bookid : data.id
         }).save((err,data)=>{
               
           if(err)  {
@@ -328,6 +328,12 @@ router.post('/verifydata',isAuth.authUser,[
           }
            
         })
+
+              /********************* */
+            }
+        })
+
+    
 
 
       
@@ -606,6 +612,25 @@ router.post('/pdf/verifydata',isAuth.authUser,[
                     }
                 })
             }
+
+            //creating the pdfg links and saving it into the database
+            let pdfLink = `/freebooks/${base64encode(data.id)}`
+
+            new pdflink({
+                userid : isAuthentication._id,
+                links : pdfLink,
+                title : data.title,
+                pdfid : data.id
+            }).save((err,data)=>{
+                  
+              if(err)  {
+                  console.log(err);
+                  return
+              }
+               
+              console.log(data);
+            })
+
         })
 
      
@@ -745,8 +770,12 @@ router.get('/bookpreview/:bid/edition',isAuth.authUser, async (req, res)=>{
         }else
         {
 
-            //here we will create the booklink and will save in the database..
-            let bookLink = `/freebooks/${base64encode(verifydata.abook.id)}`
+            //here we will get the booklink from the database..
+            
+            let getBookLink = await links.findOne({bookid : verifydata.abook.id})
+
+           let  bookLink = `${getBookLink.links}`
+           
             
             
             return res.status(200).render('bookpreview',{navTexts : mynavbar, username : auth.fname,bookinfo : verifydata,link : bookLink})

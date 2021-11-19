@@ -21,7 +21,7 @@ router.get('/:bookid', async (req, res) => {
         
     } catch (error) {
         
-        console.log("Oppps... try latar");
+        console.log("Oppps... try latar in /:bookid sellcart.js");
 
     }
 
