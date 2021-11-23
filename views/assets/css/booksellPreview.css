@@ -1,0 +1,50 @@
+body{
+    background-color: #191919;
+}
+.bname {
+    color: white;
+   margin: 10px;
+   text-transform: uppercase;
+}
+
+#bookname{
+    background-color: red;
+    padding: 10px;
+}
+.bookinformation{
+    margin-top:25px;
+}
+
+.green{
+    color:  green;
+}
+
+.mkred{
+    color: red;
+}
+
+.m{
+    width:100%;
+    margin: 5px;
+}
+
+.took{
+    margin-left: 5px;
+}
+
+.bnames{
+    color: aqua;
+}
+
+.c{
+    background-color:#191919;
+    color: white;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    margin: 12px;
+}
+.c:focus{
+    background-color:#191919;
+    color: white;
+}

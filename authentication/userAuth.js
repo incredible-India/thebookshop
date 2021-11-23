@@ -11,11 +11,11 @@ const schemaFileOfusers = require('./../model/user');
     
      try{
 
- 
+       
         // console.log(req.cookies.jwt);
         const token =   req.cookies.jwt ; //cookies
         // console.log(token);
-       
+    
         if(token === undefined)
         {
             req.isauth= null ;

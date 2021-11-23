@@ -1,0 +1,114 @@
+extends ./componants/base.pug 
+
+block title 
+    title Sell
+
+block link
+    style
+        include ./../assets/css/booksellPreview.css
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+
+
+    
+
+
+block content
+    
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+    -var price = bookinfo.price
+    .container.firstinformation 
+        .row 
+            .col-md-6
+                 #carouselExampleControls.carousel.slide(data-bs-ride='carousel')
+                    .carousel-inner
+                        if (bookinfo.img.length == 1)
+                            .carousel-item.active
+                                img.img-fluid.mainImg(src="./../../../public/src/bookimage/"+bookinfo.img[0] , alt="" height="400px" width="100%")
+                        else 
+                            .carousel-item.active
+                                img.img-fluid.mainImg(src="./../../../public/src/bookimage/"+bookinfo.img[0] , alt="" height="400px" width="100%")
+
+                            each val,index in bookinfo.img 
+                                
+                                if (index >= 1)
+                                    .carousel-item
+                                        img.img-fluid.mainImg(src="./../../../public/src/bookimage/" + bookinfo.img[index] , alt="" height="400px" width="100%")
+            .col-md-6 
+                .container.bookinformation
+                     
+                    h1.bname#bookname #{bookinfo.title}
+
+                .container.bookprise
+                    if(price != 0)
+                        h1#bookprise.bname #{bookinfo.price} ₹
+                    else 
+                        h1#bookprise.bname.green Free  
+                        h6.bname (only delivery charge) 
+
+                .container.booktype 
+                    if(bookinfo.booktype == 'n')
+
+                        h3.bname.booktype  New Book
+                    else 
+                        h3.bname.booktype  Second Hand
+                    
+                .container.booklang 
+                    h3.bname.lang  Language : #{bookinfo.language}
+
+                .container.Author
+                    h3.bname.Author Author : #{bookinfo.aurthor}
+                .container.Author
+                    h3.bname.Author Publish year : #{bookinfo.year}
+                hr
+                .container.firstinformation 
+                    
+
+                       
+                    a.btn-outline-info.btn.m  Buy Now 
+                    
+                    a.btn-outline-warning.btn.crt.m Cart 
+
+    
+    .container 
+        .row 
+            .col-md-6 
+                if(bookinfo.description == '')
+                    h2.discription.bname  No Description Available
+                else 
+                    h2.discription.bname #{bookinfo.description}
+                hr.mkred
+            
+              
+                h3.bname.cat Category : #{bookinfo.category}
+
+                h3.bname.cat Class : #{bookinfo.class}
+
+                h3.bname.cat  #{bookinfo.bookfor}
+            
+
+            
+
+    
+    .container 
+        h4.bnames   Within 7 days delivery
+    
+    .container  
+        h4.ask.bname Ask Questions 
+        .container
+            form(action="")
+                input.form-control.c(type="text") 
+
+    
+ 
+                button.btn.btn-outline-primary send
+
+
+                
+
+
+    script 
+        include ./../assets/js/sellbook.js
+    
+
