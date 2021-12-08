@@ -1,0 +1,85 @@
+extends ./componants/base.pug 
+
+block title 
+    title Sell
+
+block link
+    style
+        include ./../assets/css/booksellPreview.css
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+
+
+
+
+block content
+    
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+
+    .container.firstinformation 
+        .row 
+            .col-md-6
+                iframe.mypdfs(src= './../../../public/src/allpdfs/'+pdfinfo.img frameBorder="0" scrolling="auto" height = "400px", width="350px") 
+                       
+            .col-md-6 
+                .container.bookinformation
+                     
+                    h1.bname#bookname #{pdfinfo.title}
+
+               
+
+               
+                    
+                .container.booklang 
+                    h3.bname.lang  Language : #{pdfinfo.language}
+
+                .container.Author
+                    h3.bname.Author Author : #{pdfinfo.auth}
+               
+                hr
+                .container.firstinformation 
+                    
+
+                       
+                    a.btn-outline-info.btn.m.dwnl Download
+                    
+             
+
+    
+    .container 
+        .row 
+            .col-md-6 
+                h3.bname Discription
+                if(pdfinfo.description == '')
+                    h2.discription.bname  No Description Available
+                else 
+                    h2.discription.bname #{pdfinfo.description}
+                hr.mkred
+
+            
+
+            
+
+   
+    
+    .container  
+        h4.ask.bname Ask Questions 
+        .container
+            form(action="")
+                input.form-control.c(type="text") 
+
+    
+ 
+                button.btn.btn-outline-primary send
+    
+    script 
+        include ./../assets/js/pdfsell.js
+
+
+                
+
+
+
+    
+

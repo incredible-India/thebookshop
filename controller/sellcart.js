@@ -62,7 +62,7 @@ router.get('/:bookid',userAuth.authUser ,async (req, res) => {
 })
 
 //for the PDF...
-router.get('/pdfs/:pdfid/show',async(req, res, next)=>{
+router.get('/pdfs/:pdfid/show',userAuth.authUser,async(req, res, next)=>{
 
    try {
     let pdfIdFromUrl = base64decode(req.params.pdfid);
@@ -71,7 +71,29 @@ router.get('/pdfs/:pdfid/show',async(req, res, next)=>{
 
     if(verifythePdfIdFromUrl)
     {
-        return res.json(verifythePdfIdFromUrl)
+        
+           let verifiedUser = await req.isauth;
+
+        if(verifiedUser)
+        {
+            mynavBar = {'Home':'/','cart' : '/'}
+            userName =  verifiedUser.fname;
+        }else
+        {
+             mynavBar = {'Home':'/'}
+             userName = 'User'
+        }
+
+
+        
+        return res.status(200).render('pdfpreviewsell',{
+         
+         navTexts :mynavBar,
+         username : userName,
+         pdfinfo : verifythePdfIdFromUrl
+
+        })
+
     }else
     {
         return res.status(404).json({message : "No data Found", errorCode : 404})
@@ -87,6 +109,11 @@ router.get('/pdfs/:pdfid/show',async(req, res, next)=>{
 
 
 })
+//if user click to dowload pdf file
+
+
+
+
 
 //for the project
 
@@ -115,7 +142,6 @@ router.get('/projects/:projectid/show',async(req, res, next)=>{
  
  
  })
-
 
 
 
