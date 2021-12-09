@@ -4,11 +4,12 @@ const router = express.Router()
 const allBookInDB = require('./../model/books');//all the book on this side are kept in this 
 const allPdfInDB = require('./../model/pdf');//all the pdf are kept in this...
 const allProjectInDb = require('./../model/projects');// all the projects are kept inside this...
-const {base64encode,base64decode} =require('nodejs-base64')
+const {base64encode,base64decode} =require('nodejs-base64');
 const userAuth =  require('./../authentication/userAuth');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser'); //cookies
 const path = require('path');
+const mainUser = require('./../model/user');
 
 router.use(express.static(path.join(__dirname + './../')))
 router.use(cookieParser());//if we will not use this it will give error that jwt of undefined
@@ -117,7 +118,7 @@ router.get('/pdfs/:pdfid/show',userAuth.authUser,async(req, res, next)=>{
 
 //for the project
 
-router.get('/projects/:projectid/show',async(req, res, next)=>{
+router.get('/projects/:projectid/show',userAuth.authUser, async (req, res)=>{
 
     try {
      let projectIdFromUrl = base64decode(req.params.projectid);
@@ -126,7 +127,45 @@ router.get('/projects/:projectid/show',async(req, res, next)=>{
  
      if(verifytheProjectIdFromUrl)
      {
-         return res.json(verifytheProjectIdFromUrl)
+         
+        let verifiedUser = await req.isauth;
+
+    
+
+        if(verifiedUser)
+        {
+            mynavBar = {'Home':'/','cart' : '/'}
+            userName =  verifiedUser.fname;
+        }else
+        {
+             mynavBar = {'Home':'/'}
+             userName = 'User'
+        }
+
+        // for printing the project owner name in  project download preview page
+
+        let projectOwner =  await mainUser.findOne({_id :verifytheProjectIdFromUrl.userid});
+
+        if(projectOwner)
+        {
+            userNAMEi = projectOwner.fname + " " +projectOwner.lname;
+
+        }else
+        {
+            userNAMEi = "Not Available"
+        }
+        
+       
+
+        return res.status(200).render('projectsellpreview',{
+         
+         navTexts :mynavBar,
+         username : userName,
+         project : verifytheProjectIdFromUrl
+         ,projectowner : userNAMEi
+
+        })
+
      }else
      {
          return res.status(404).json({message : "No data Found", errorCode : 404})

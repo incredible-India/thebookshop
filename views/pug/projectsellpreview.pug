@@ -1,0 +1,88 @@
+extends ./componants/base.pug 
+
+block title 
+    title Project 
+
+block link
+    style
+        include ./../assets/css/booksellPreview.css
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+
+
+
+
+block content
+    
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+
+    .container.firstinformation 
+        .row 
+            .col-md-6
+                if (project.img)
+                    img.img-fluid.mainImg(src="./../../../public/src/projectimage/"+ project.img width="100%" height="250px")
+                else
+                    img.img-fluid.mainImg(src="./../../../public/src/svg/project.svg" width="100%" height="350px")  
+                       
+            .col-md-6 
+                .container.bookinformation
+                     
+                    h1.bname#bookname #{project.title}
+
+               
+
+               
+                    
+                .container.booklang 
+                    h3.bname.lang  Language : #{project.elements}
+
+                .container.Author
+                    h5.bname.Author Author : #{projectowner}
+               
+                hr
+                .container.firstinformation 
+                    
+
+                       
+                    a.btn-outline-info.btn.m.dwnl(href = project.link) Download
+                    
+             
+
+    
+    .container 
+        .row 
+            .col-md-6 
+                h3.bname Discription
+                if(project.description == null)
+                    h2.discription.bname  No Description Available
+                else 
+                    h2.discription.bname #{project.description}
+                hr.mkred
+
+            
+
+            
+
+   
+    
+    .container  
+        h4.ask.bname Ask Questions 
+        .container
+            form(action="")
+                input.form-control.c(type="text") 
+
+    
+ 
+                button.btn.btn-outline-primary send
+    
+    //- script 
+    //-     include ./../assets/js/pdfsell.js
+
+
+                
+
+
+
+    
+

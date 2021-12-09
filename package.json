@@ -30,7 +30,7 @@
     "mongoose": "^6.0.5",
     "morgan": "^1.10.0",
     "nodejs-base64": "^2.0.0",
-    "nodemon": "^2.0.12",
+    "nodemon": "^2.0.15",
     "pug": "^3.0.2",
     "url-hash": "^1.0.2"
   }
