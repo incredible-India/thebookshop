@@ -1,0 +1,57 @@
+extends ./componants/base.pug
+
+
+block title
+    title Book Shop
+
+block link
+    style 
+        include ./../assets/css/index.css
+
+    
+
+block nav 
+    include ./componants/navbar.pug
+    include ./componants/secondaryNavBar.pug
+
+block content 
+    .container.mt-3 
+        if(cartValue)
+            .row.mt-2
+                .col-sm-8 
+                    
+                    for i in cartValue
+                        .row 
+                            .col-sm-4
+                                img.img-fluid(src="./../../../public/src/bookimage/" + i.img, alt="book img" width="100%" height="100%")
+                            .col-sm-8 
+                                a.removeit(href="/freebooks/" + Buffer.from(i.bookid, 'utf8').toString('base64'))
+                                    h3.text-dark.alert-primary #{i.title}
+                                h3.text-light ₹ #{i.price}
+                                h4.text-light  Language : #{i.language}
+                                h4.text-light  Author : #{i.author}
+                                if(i.booktype ==  'n')
+                                    h4.text-light New Book
+                                else 
+                                    h4.text-light Old Book
+                                
+                                a.btn.btn-outline-primary.mt-1(href="/") Buy Now
+                                a.btn.btn-outline-danger.mt-1.mx-2(href="/freebooks/remove/cart/" + Buffer.from(i.bookid, 'utf8').toString('base64') ) Remove
+                                
+
+
+                        hr.text-light       
+                .col-sm-4
+                    h3.text-light Total Items : #{totalitems}
+                    hr.text-white
+                    h3.text-light Total Ammount : #{totalAmount}
+                    hr.text-white
+                
+                    a.btn.btn-outline-success.mt-1 Checkout
+
+        else 
+            .container.text-center 
+                img.img-fluid(src="./../../../public/src/svg/emptycart.jpg", alt="" width="300px" height="350px")
+                h1.text-dark.alert-warning.mt-3 You Cart Is Empaty 
+                a.btn.btn-outline-primary.mt-1(href="/") Shop Now
+                

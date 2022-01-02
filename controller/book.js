@@ -69,7 +69,7 @@ router.get('/services',isAuth.authUser,async function(req,res){
                 mybook = {nodata :false ,numberofbooks : numberbook,lists : booklist}
             }else
             {
-                return res.status(404).send("Server issue....Error Code BSDB 010")
+                return res.status(404).send("Server issue....Error Code BSDB 010,(No books are there please upload)")
             }
 
         }else
@@ -134,7 +134,7 @@ router.get('/services',isAuth.authUser,async function(req,res){
 
 
         /////////////////////////////////////////////////////
-        // console.log(mybook);
+     
         // console.log(mypdf);
         // console.log(myproject);
         //now we will pass these informations in services..

@@ -18,6 +18,7 @@ block content
     
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
     -var price = bookinfo.price
+    -var bookid = bookids
     .container.firstinformation 
         .row 
             .col-md-6
@@ -68,7 +69,7 @@ block content
                        
                     a.btn-outline-info.btn.m  Buy Now 
                     
-                    a.btn-outline-warning.btn.crt.m Cart 
+                    a.btn-outline-warning.btn.crt.m(href='/freebooks/addtocart/' + bookid) Cart 
 
     
     .container 

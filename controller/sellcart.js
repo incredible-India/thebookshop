@@ -10,6 +10,8 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser'); //cookies
 const path = require('path');
 const mainUser = require('./../model/user');
+const mycart = require('./../model/cart')
+
 
 router.use(express.static(path.join(__dirname + './../')))
 router.use(cookieParser());//if we will not use this it will give error that jwt of undefined
@@ -42,7 +44,7 @@ router.get('/:bookid',userAuth.authUser ,async (req, res) => {
             //after varifying the data we will show the all information related to book
             //now sending the all bookinformtion to the 
 
-            return res.status(200).render('booksellPreview',{navTexts : mynavBar, username : userName,bookinfo : verifyDataInDB},)
+            return res.status(200).render('booksellPreview',{navTexts : mynavBar, username : userName,bookinfo : verifyDataInDB,bookids:req.params.bookid},)
           
 
 
@@ -185,6 +187,202 @@ router.get('/projects/:projectid/show',userAuth.authUser, async (req, res)=>{
 
 
 
+ //add to  mycart
 
+router.get('/addtocart/:bookid',userAuth.authUser, async (req, res)=>{
+
+    try{
+
+        let mybookid  = base64decode(req.params.bookid)
+    
+
+        let verifyFirst = await req.isauth
+
+        if(verifyFirst)
+        {
+            //verifybookid in books dbs
+            verifyDataBook = await allBookInDB.findOne({_id:mybookid})
+
+            if(verifyDataBook)
+            {
+                if(verifyFirst._id == verifyDataBook.userid)
+                {
+                    let checkExistace = await mycart.findOne({userid : verifyFirst.id})
+                  
+
+                    if(!checkExistace)
+                    {
+
+                        new mycart(
+                            {
+                                userid:verifyFirst.id,
+                                items:[
+                                    {
+                                        bookid:verifyDataBook.id,
+                                        title:verifyDataBook.title,
+                                        language:verifyDataBook.language,
+                                        author:verifyDataBook.aurthor,
+                                        price:verifyDataBook.price,
+                                        img:verifyDataBook.img[0],
+                                        booktype:verifyDataBook.booktype
+    
+                                    }
+                                ]
+    
+                            }
+                        ).save((err)=>{
+                            if(err) 
+                            {
+                                console.log(err);
+                                return err
+                            }
+    
+                        })
+
+                    }else
+
+                    {
+
+                     
+
+                        checkExistace.items = checkExistace.items.push({
+                            bookid:verifyDataBook.id,
+                                        title:verifyDataBook.title,
+                                        language:verifyDataBook.language,
+                                        author:verifyDataBook.aurthor,
+                                        price:verifyDataBook.price,
+                                        img:verifyDataBook.img[0],
+                                        booktype:verifyDataBook.booktype
+                        })
+                        mycart.findOneAndUpdate({userid : verifyFirst.id},{
+                            items : checkExistace.items
+                        },(err)=>{
+                            if (err) 
+                            {console.log(err,'dbs error')
+                                return;
+                            }
+                            
+                        })
+                      
+                        
+
+                   
+                    
+                   
+
+                }
+
+
+                    return res.redirect('/')
+                //    let mynavBar = {'Home':'/'}
+                // //    let cartinfo = {}
+
+
+                //     return res.render('mycart',{
+         
+                //         navTexts :mynavBar,
+                //         username : verifyFirst.fname,
+                //         // pdfinfo : verifythePdfIdFromUrl
+               
+                //        })
+                 
+                }else
+                {
+                    return res.send('<h1> We are facing some technical issue bs_sell Err bs001</h1>')
+                }
+
+            }else
+            {
+                return res.send('<h1> Connot show the cart now.. please try latar</h1>')
+            }
+
+          
+          
+
+
+        }else
+        {
+            return res.redirect('/newregistration/login')
+        }
+
+    }catch (error) {
+        console.log(error);
+        return res.redirect('/newregistration/login')
+    }
+
+ 
+
+
+
+ })
+
+
+//show mycart
+
+router.get('/show/mycart',userAuth.authUser, async (req, res)=>{
+
+    let verifyUser = await req.isauth
+
+    if(verifyUser)
+    {
+        let mycartItems = await mycart.findOne({userid : verifyUser.id});
+
+        let cartData = new Array;
+        let totalamm =0;
+        let totalItems =0;
+
+        if(mycartItems)
+        {
+            for (i in mycartItems.items)
+            {
+             
+                cartData[i] = mycartItems.items[i]
+                
+            }
+         
+            totalItems = cartData.length
+            
+            for (i in cartData)
+
+          {
+                totalamm = totalItems + Number(cartData[i].price)
+           
+                
+            
+          }
+          
+
+        }else
+
+        {
+            cartData = null
+         
+        }
+    
+        let mynavBar = {'Home':'/'}
+        return res.render('mycart',{
+         
+                navTexts :mynavBar,
+               username : verifyUser.fname,
+                cartValue : cartData
+                ,totalitems : totalItems
+                ,totalAmount : totalamm
+           
+                   })
+
+    }else
+
+    {
+        return res.redirect('/newregistration/login')
+    }
+
+})
+
+
+// for remove the book
+router.get('/remove/cart/:bookid',userAuth.authUser, async (req, res)=>{
+
+    res.send("hello")
+})
 
 module.exports =  router;
