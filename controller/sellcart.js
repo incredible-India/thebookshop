@@ -273,7 +273,7 @@ router.get('/addtocart/:bookid',userAuth.authUser, async (req, res)=>{
                 }
 
 
-                    return res.redirect('/')
+                    return res.redirect('/freebooks/show/mycart')
                 //    let mynavBar = {'Home':'/'}
                 // //    let cartinfo = {}
 
@@ -330,7 +330,7 @@ router.get('/show/mycart',userAuth.authUser, async (req, res)=>{
         let cartData = new Array;
         let totalamm =0;
         let totalItems =0;
-
+  
         if(mycartItems)
         {
             for (i in mycartItems.items)
@@ -341,11 +341,11 @@ router.get('/show/mycart',userAuth.authUser, async (req, res)=>{
             }
          
             totalItems = cartData.length
-            
+          
             for (i in cartData)
 
           {
-                totalamm = totalItems + Number(cartData[i].price)
+                totalamm = totalamm + Number(cartData[i].price)
            
                 
             
@@ -382,7 +382,99 @@ router.get('/show/mycart',userAuth.authUser, async (req, res)=>{
 // for remove the book
 router.get('/remove/cart/:bookid',userAuth.authUser, async (req, res)=>{
 
-    res.send("hello")
+   
+    bookidURL = base64decode(req.params.bookid)
+    
+    let isuser  = await req.isauth
+
+    if(isuser)
+    {
+
+        myCartItems = await mycart.findOne({userid : isuser.id})
+
+        if(myCartItems)
+        {
+            itemsINcart = myCartItems.items
+
+            datatoUpdate = new Array()
+
+            for (i=0;i<itemsINcart.length;i++)             {
+              
+                if(itemsINcart[i].bookid != bookidURL)
+                { 
+                    
+                
+                        datatoUpdate.push(itemsINcart[i]) 
+                       
+                    }
+             
+                 
+                  
+                 
+                 
+            }
+          
+                try
+                {
+                    updatadtabase = await mycart.findOneAndUpdate({userid : isuser.id},{items : datatoUpdate})
+                    return res.redirect('/freebooks/show/mycart')
+                }catch(err)
+                {
+                    return err
+                }
+           
+
+
+
+        }else
+        {
+            return res.redirect('<h1> Bad request </h1>')
+        }
+
+
+
+    }else
+    {
+        return res.redirect('/newregistration/login')
+    }
+    
 })
 
+
+//clear all cart items
+router.get('/clear/cart',userAuth.authUser, async (req, res)=>
+{
+
+    let isuser  = await req.isauth
+
+    if(isuser)
+    {
+       itemsINcart = await mycart.findOne({userid : isuser.id})
+
+       if(itemsINcart.items.length !=0)
+       {
+
+        itemsINcart = []
+
+        try {
+            await mycart.findOneAndUpdate({userid : isuser.id},{items : itemsINcart})
+            return res.redirect('/freebooks/show/mycart/')
+        } catch (error) {
+            return err
+        }
+
+       }else
+
+       {
+           return res.send('<h1> Cart is Empty Already </h1>')
+       }
+
+    }else
+
+    {
+        return res.redirect('/newregistration/login')
+    }
+
+
+})
 module.exports =  router;

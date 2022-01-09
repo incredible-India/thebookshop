@@ -16,7 +16,7 @@ block nav
 
 block content 
     .container.mt-3 
-        if(cartValue)
+        if(cartValue.length != 0)
             .row.mt-2
                 .col-sm-8 
                     
@@ -48,10 +48,12 @@ block content
                     hr.text-white
                 
                     a.btn.btn-outline-success.mt-1 Checkout
+                    a.btn.btn-outline-danger.mt-1.mx-3(href="/freebooks/clear/cart") Remove All From Cart
 
         else 
             .container.text-center 
                 img.img-fluid(src="./../../../public/src/svg/emptycart.jpg", alt="" width="300px" height="350px")
                 h1.text-dark.alert-warning.mt-3 You Cart Is Empaty 
                 a.btn.btn-outline-primary.mt-1(href="/") Shop Now
+                
                 
