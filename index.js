@@ -25,7 +25,7 @@ const app = express();
 //declare the port number 
 
 const __port = process.env.PORT || 80;
-
+//middleware functions starts from here
 //using middlewere
 app.use('/newregistration',userRoute);//user routes
 app.use('/bookshop',bookRoute);//books route
